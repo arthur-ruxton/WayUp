@@ -1,3 +1,13 @@
+# Poisttree
+
+Building a trello like app with Next.js, MUI, FireBase
+
+focus on learning.
+
+emphasis on good UI, unit-testing and possibly end to end testing. 
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
