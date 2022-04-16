@@ -1,4 +1,4 @@
-# Poisttree
+# Posittree
 
 Building a trello like app with Next.js, MUI, FireBase
 
