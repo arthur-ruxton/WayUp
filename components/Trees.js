@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
 import { collection, query, orderBy, onSnapshot } from '@firebase/firestore';
-
 import { db } from '../firebase/firebase';
+
+import Tree from './Tree'
 
 const Trees = () => {
   const [trees, setTrees] = useState([])
@@ -22,7 +23,15 @@ const Trees = () => {
 
   return (
     <div>
-      {trees.map(tree => <div key={tree.id}>{tree.title}</div>)}
+      {trees.map(tree => (
+        <Tree 
+          key={tree.id} 
+          id={tree.id} 
+          favourite={tree.favourite} 
+          timestamp={tree.timestamp} 
+          title={tree.title}
+          />
+      ))}
     </div>
   )
 }
