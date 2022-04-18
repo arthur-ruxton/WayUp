@@ -11,7 +11,7 @@ const Tree = ({id, favourite, timestamp, title}) => {
     >
       <ListItemText
         primary={title}
-        secondary={moment(timestamp).format("MMMM do, yyyy")}
+        secondary={moment(timestamp).format("DD MMMM, YYYY ")}
       />
     </ListItem>
   )
