@@ -1,15 +1,21 @@
 //import styles from '../styles/Home.module.css'
-import { useState } from 'react'
-import { Container, Snackbar, Alert } from '@mui/material'
+import { useState} from 'react'
+import { Container, Snackbar, Alert, Button } from '@mui/material'
 
 import { TreeContext } from './TreeContext'
 import Trees from '../components/Trees'
 import TreeForm from '../components/TreeForm'
 
 export default function Home() {
+  const [showTreeForm, setShowTreeForm] = useState(false)
   const [open, setOpen] = useState(false)
   const [alertType, setAlertType] = useState('succsess')
   const [alertMessage, setAlertMessasge] = useState('')
+  const [tree, setTree] = useState({title: '', favourite: false})
+
+  const showNewTreeForm = () => {
+    setShowTreeForm(true)
+  }
 
   const showAlert = (type, message) => {
     setAlertType(type)
@@ -26,9 +32,8 @@ export default function Home() {
   };
 
   return (
-    <TreeContext.Provider value={{ showAlert }}>
+    <TreeContext.Provider value={{ showAlert, tree, setTree }}>
       <Container>
-        <TreeForm />
         <Snackbar 
           anchorOrigin={{vertical: 'bottom', horizontal: 'centre'}} 
           open={open} 
@@ -44,6 +49,15 @@ export default function Home() {
           </Alert>
         </Snackbar>
         <Trees />
+        {showTreeForm ? <TreeForm setShowTreeForm={setShowTreeForm}/> 
+        :  
+        <Button 
+          variant="contained" 
+          sx={{ mt: 3 }}
+          onClick={showNewTreeForm}
+        >
+          New Tree
+        </Button>}
       </Container>
     </TreeContext.Provider>
   )
