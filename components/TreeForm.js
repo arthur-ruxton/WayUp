@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { TreeContext } from '../pages/TreeContext' //context used to create alert messages
 
 import { TextField, Button } from "@mui/material"
@@ -9,11 +9,7 @@ import { collection, addDoc, serverTimestamp} from '@firebase/firestore' // fire
 import { db } from '../firebase/firebase' // getting the database
 
 const TreeForm = ({ setShowTreeForm }) => {
-  const inputAreaRef = useRef()
-
-  const [tree, setTree] = useState({title: '', favourite: false})
-
-  const { showAlert } = useContext(TreeContext) // getting the context
+  const { showAlert, tree, setTree } = useContext(TreeContext) // getting the context
 
   const onChange = (e) => {
     const titleInput = e.target.value
@@ -25,27 +21,12 @@ const TreeForm = ({ setShowTreeForm }) => {
     setShowTreeForm(false)
     const collectionRef = collection(db, 'Trees')
     const docRef = await addDoc(collectionRef, {...tree, timestamp: serverTimestamp()})
+    showAlert('success', `${tree.title} - Tree added successfully`)
     setTree({title: '', favourite: false})
-    showAlert('success', `Tree with id ${docRef.id} added successfully`)
   }
 
-  useEffect(() => {
-    const checkClickArea = (e) => {
-      if(!inputAreaRef.current.contains(e.target)){
-        console.log('clicked outside input');
-        setTree({title: '', favourite: false})
-      } else {
-        console.log('clicked inside input')
-      }
-    }
-    document.addEventListener("mousedown", checkClickArea)
-    return () => {
-      document.removeEventListener("mousedown", checkClickArea)
-    }
-  }, [])
-
   return (
-    <div ref={inputAreaRef}>
+    <div>
       {/* <pre>{JSON.stringify(tree)}</pre> this saves us from using console.log super cool*/}
       <TextField 
       fullWidth
