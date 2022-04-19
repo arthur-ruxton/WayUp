@@ -6,6 +6,7 @@ import { ListItem, IconButton, ListItemText } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { db } from '../firebase/firebase'
 import { TreeContext } from '../pages/TreeContext'
@@ -30,6 +31,10 @@ const Tree = ({id, favourite, timestamp, title}) => {
     const updatedTree = { ...tree, timestamp: serverTimestamp()}
     await updateDoc(docRef, updatedTree)
     showAlert('success', `${tree.title} - Tree updated successfully`)
+    setTree({title: '', favourite: false})
+  }
+  const onCancleEdit = () => {
+    setEditing(false)
     setTree({title: '', favourite: false})
   }
 
@@ -65,6 +70,9 @@ const Tree = ({id, favourite, timestamp, title}) => {
       <input placeholder={title} type='text' onChange={onTitleChange}/>
       <IconButton>
         <CheckIcon onClick={onSaveButtonClick}/>
+      </IconButton>
+      <IconButton>
+        <CloseIcon onClick={onCancleEdit}/>
       </IconButton>
       </>)
     }
