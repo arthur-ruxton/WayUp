@@ -2,6 +2,7 @@
 import { useState} from 'react'
 import { Container, Button } from '@mui/material'
 
+import Login from '../components/Login'
 import TreesList from '../components/TreesList'
 import TreeForm from '../components/TreeForm'
 
@@ -12,6 +13,7 @@ export default function Home() {
     setShowTreeForm(true)
   }
 
+  return <Login />
   return (
     <Container maxWidth='xs'>
       <TreesList />
