@@ -6,7 +6,7 @@ import moment from 'moment'
 // imports from project files including icons
 import { db } from '../../firebase/firebase'
 import { TreeContext } from '../../pages/TreeContext'
-import { CheckIcon, CloseIcon } from '../../assets/icons'
+import { CheckIcon, CloseIcon, StarIcon, StarOutlineIcon, HomeIcon } from '../../assets/icons'
 
 const Contents = ({ treeProps }) => {
   const [currentTree, setCurrentTree] = useState(JSON.parse(treeProps))
@@ -39,7 +39,7 @@ const Contents = ({ treeProps }) => {
   <div>
     {!editing ?
     <h2 onClick={onEditButtonClick}>
-      {currentTree.title}  {`${currentTree.favourite}`}
+      {currentTree.title}  
     </h2> :
     (<>
       <input placeholder={currentTree.title} type='text' onChange={onTitleChange}/>
@@ -51,6 +51,18 @@ const Contents = ({ treeProps }) => {
       </IconButton>
       </>)
     }
+    {!currentTree.favourite ? 
+      <IconButton>
+        <StarOutlineIcon/>
+      </IconButton>
+       : 
+      <IconButton>
+        <StarIcon/>
+      </IconButton>
+    }
+    <IconButton href="/">
+      <HomeIcon/>
+    </IconButton>
     <p>
       {moment(currentTree.timestamp).format("DD MMMM, YYYY ")}
     </p>
