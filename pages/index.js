@@ -13,7 +13,7 @@ export default function Home() {
   }
 
   return (
-    <Container>
+    <Container maxWidth='xs'>
       <TreesList />
       {showTreeForm ? <TreeForm setShowTreeForm={setShowTreeForm}/> 
       :  
