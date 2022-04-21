@@ -23,8 +23,9 @@ export const AuthProvider = ({ children }) => {
       const token = await user.getIdToken();
       setCurrentUser(user)
       setLoading(false)
+      // here we have logged the token, establishing that we CAN get it. 
       console.log('token:', token, )
-      console.log('user:', user, )
+      // console.log('user:', user, )
     })
   }, [])
 
