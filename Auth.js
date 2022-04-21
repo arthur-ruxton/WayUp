@@ -1,12 +1,14 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-
-import { getAuth, updateCurrentUser } from 'firebase/auth'
+import { getAuth } from 'firebase/auth'
 
 const AuthContext = createContext({})
 
+import Login from './components/Login'
+import Loading from './components/Loading'
+
 export const AuthProvider = ({ children }) => {
 
-    const [updateCurrentUser, setCurrentUser] = useState(null)
+    const [currentUser, setCurrentUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -26,11 +28,18 @@ export const AuthProvider = ({ children }) => {
     })
   }, [])
 
-  return (
-    <AuthContext.Provider value={{}}>
-      {children}
-    </AuthContext.Provider>
-  )
+  if(loading) {
+    return <Loading type='spinningBubbles' color='yellowgreen'/>
+  }
+  if(!currentUser) {
+    return <Login />
+  } else {
+    return (
+      <AuthContext.Provider value={{ currentUser }}>
+        {children}
+      </AuthContext.Provider>
+    )
+  }
 }
 
 export const useAuth = () => useContext(AuthContext)

@@ -2,8 +2,8 @@
 import { useState} from 'react'
 import { Container, Button } from '@mui/material'
 
-import Login from '../components/Login'
-import Loading from '../components/Loading'
+// import Login from '../components/Login'
+// import Loading from '../components/Loading'
 import TreesList from '../components/TreesList'
 import TreeForm from '../components/TreeForm'
 
@@ -14,20 +14,18 @@ export default function Home() {
     setShowTreeForm(true)
   }
 
-  return <Loading type='spinningBubbles' color='yellowgreen'/>
-//   return <Login />
-//   return (
-//     <Container maxWidth='xs'>
-//       <TreesList />
-//       {showTreeForm ? <TreeForm setShowTreeForm={setShowTreeForm}/> 
-//       :  
-//       <Button 
-//         variant="contained" 
-//         sx={{ mt: 3 }}
-//         onClick={showNewTreeForm}
-//       >
-//         New Tree
-//       </Button>}
-//     </Container>
-//   )
+  return (
+    <Container maxWidth='xs'>
+      <TreesList />
+      {showTreeForm ? <TreeForm setShowTreeForm={setShowTreeForm}/> 
+      :  
+      <Button 
+        variant="contained" 
+        sx={{ mt: 3 }}
+        onClick={showNewTreeForm}
+      >
+        New Tree
+      </Button>}
+    </Container>
+  )
  }
