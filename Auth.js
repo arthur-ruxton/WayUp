@@ -8,8 +8,8 @@ import Loading from './components/Loading'
 
 export const AuthProvider = ({ children }) => {
 
-    const [currentUser, setCurrentUser] = useState(null)
-    const [loading, setLoading] = useState(true)
+  const [currentUser, setCurrentUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const auth = getAuth()
