@@ -10,8 +10,8 @@ function MyApp({ Component, pageProps }) {
   return (
   <AuthProvider>
     <TreeContext.Provider value={{ newTreeData, setNewTreeData }}>
-    <Component {...pageProps} />
-  </TreeContext.Provider>
+      <Component {...pageProps} />
+    </TreeContext.Provider>
   </AuthProvider>
   )
 }
