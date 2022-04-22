@@ -1,8 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import 'firebase/auth';
 import { getAuth } from 'firebase/auth'
-
-import nookies from 'nookies'
 
 const AuthContext = createContext({})
 
@@ -21,15 +18,13 @@ export const AuthProvider = ({ children }) => {
         console.log('no user')
         setCurrentUser(null)
         setLoading(false)
-        nookies.set(null, "token", "", {sameSite: 'lax'})
         return
       } 
       const token = await user.getIdToken();
       setCurrentUser(user)
       setLoading(false)
-      nookies.set(null, "token", token, {sameSite: 'lax'})
       // here we have logged the token, establishing that we CAN get it. 
-      // this works -> console.log('token:', token, )
+      console.log('token:', token, )
       // console.log('user:', user, )
     })
   }, [])
