@@ -6,11 +6,15 @@ import { db } from '../firebase/firebase';
 import { useAuth } from '../Auth'
 import TreeCard from './TreeCard'
 
-const TreesList = () => {
+const TreesList = (treeListProps) => {
   const { currentUser } = useAuth();
 
   // get and set list of trees
   const [treesList, setTreesList] = useState([])
+
+  // useEffect(() => {
+  //   setTreesList(JSON.parse(treeListProps))
+  // }, [])
 
   useEffect(() => {
     const collectionRef = collection(db, "Trees")
