@@ -3,6 +3,8 @@ import { getDocs, getDoc, doc, collection, updateDoc, serverTimestamp } from 'fi
 import { IconButton } from '@mui/material'
 import moment from 'moment'
 
+import { getSession } from 'next-auth/client'
+
 // imports from project files including icons
 import { db } from '../../firebase/firebase'
 import { TreeContext } from '../../pages/TreeContext'
@@ -74,41 +76,53 @@ export default Contents
 
 
 // NEXT.js system for statically generating the routes for every item in the dp during build process//
- export const getStaticPaths = async () => {
-  const snapshot = await getDocs(collection(db, 'Trees'))
-  const paths = snapshot.docs.map(doc => {
-    return {
-      params: { id: doc.id.toString() }
-    }
-  })
+//  export const getStaticPaths = async () => {
+//   const snapshot = await getDocs(collection(db, 'Trees'))
+//   const paths = snapshot.docs.map(doc => {
+//     return {
+//       params: { id: doc.id.toString() }
+//     }
+//   })
 
-  return {
-    paths,
-    fallback: false
-  }
-}
+//   return {
+//     paths,
+//     fallback: false
+//   }
+// }
 
 
 // NEXT.js system for statically generating the pages for every item in the dp during build process//
-export const getStaticProps = async (context) => {
-  const id = context.params.id
+// export const getStaticProps = async (context) => {
+//   const id = context.params.id
 
-  const docRef = doc(db, 'Trees', id)
-  const docSnap = await getDoc(docRef)
+//   const docRef = doc(db, 'Trees', id)
+//   const docSnap = await getDoc(docRef)
 
-  return {
-    props: { treeProps: JSON.stringify({ ...docSnap.data(), id: docSnap.id, timestamp: docSnap.data().timestamp?.toDate().getTime() }) || null}
-  }
-}
+//   return {
+//     props: { treeProps: JSON.stringify({ ...docSnap.data(), id: docSnap.id, timestamp: docSnap.data().timestamp?.toDate().getTime() }) || null}
+//   }
+// }
 
 // getServerSideProps allows server side rendering, I'm not super clear on the difference this makes.
-    // export const getServerSideProps = async (context) => {
-    //   const id = context.params.id
+    export const getServerSideProps = async (context) => {
+
+      const session = await getSession(context)
+
+      if(!session){
+        return {
+          redirect: {
+            destination: '/api/auth/signin',
+            permanent: false,
+          }
+        }
+      }
+
+      const id = context.params.id
     
-    //   const docRef = doc(db, 'Trees', id)
-    //   const docSnap = await getDoc(docRef)
+      const docRef = doc(db, 'Trees', id)
+      const docSnap = await getDoc(docRef)
     
-    //   return {
-    //     props: { treeProps: JSON.stringify({ ...docSnap.data(), id: docSnap.id, timestamp: docSnap.data().timestamp?.toDate().getTime() }) || null}
-    //   }
-    // }
+      return {
+        props: { treeProps: JSON.stringify({ ...docSnap.data(), id: docSnap.id, timestamp: docSnap.data().timestamp?.toDate().getTime() }) || null}
+      }
+    }

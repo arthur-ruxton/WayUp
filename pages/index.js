@@ -1,6 +1,6 @@
 //import styles from '../styles/Home.module.css'
 import { useState, useEffect } from 'react'
-import { useSession, getSession, signIn } from 'next-auth/client'
+import { useSession, getSession } from 'next-auth/client'
 
 import { Container, Button } from '@mui/material'
 
@@ -9,7 +9,7 @@ import TreeForm from '../components/TreeForm'
 
 export default function Home({data}) {
   const [session, loading] = useSession()
-  console.log('session, loading: ', {session, loading})
+  // console.log('session, loading: ', {session, loading})
   const [showTreeForm, setShowTreeForm] = useState(false)
 
   const showNewTreeForm = () => {
@@ -17,10 +17,7 @@ export default function Home({data}) {
   }
 
   return (
-    <>
-    {
-      session ?
-      <Container maxWidth='xs'>
+    <Container maxWidth='xs'>
       <h3>{session.user.name}</h3>
       <TreesList />
       {showTreeForm ? <TreeForm setShowTreeForm={setShowTreeForm}/> 
@@ -33,10 +30,6 @@ export default function Home({data}) {
         New Tree
       </Button>}
     </Container>
-    :
-    <></>
-    }
-    </>
   )
 }
 
@@ -44,6 +37,16 @@ export default function Home({data}) {
 export async function getServerSideProps(context) {
 
   const session = await getSession(context)
+
+  if(!session){
+    return {
+      redirect: {
+        destination: '/api/auth/signin',
+        permanent: false,
+      }
+    }
+  }
+  // const email = session.user.email ?
   return {
     props: {
       session,
