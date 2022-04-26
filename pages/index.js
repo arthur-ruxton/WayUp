@@ -46,7 +46,25 @@ export async function getServerSideProps(context) {
       }
     }
   }
-  // const email = session.user.email ?
+
+  const email = session.user
+  console.log('email from session', email)
+
+  // const collectionRef = collection(db, "Trees")
+  // const q = query(collectionRef, where("email", "==", email), orderBy("timestamp", "desc"))
+  // const querySnapshot = await getDocs(q)
+  // let treeList = []
+  // querySnapshot.forEach((doc) => {
+  //   treeList.push({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })
+  // })
+
+  // return {
+  //   props: { 
+  //     session,
+  //     treeListProps: JSON.stringify(treeList) || [], 
+  //   }, // will be passed to the page component as props
+  // }
+
   return {
     props: {
       session,
