@@ -1,11 +1,15 @@
 //import styles from '../styles/Home.module.css'
-import { useState} from 'react'
+import { useState, useEffect } from 'react'
+import { useSession, getSession, signIn } from 'next-auth/client'
+
 import { Container, Button } from '@mui/material'
 
 import TreesList from '../components/TreesList'
 import TreeForm from '../components/TreeForm'
 
-export default function Home() {
+export default function Home({data}) {
+  const [session, loading] = useSession()
+  console.log('session, loading: ', {session, loading})
   const [showTreeForm, setShowTreeForm] = useState(false)
 
   const showNewTreeForm = () => {
@@ -13,7 +17,11 @@ export default function Home() {
   }
 
   return (
-    <Container maxWidth='xs'>
+    <>
+    {
+      session ?
+      <Container maxWidth='xs'>
+      <h3>{session.user.name}</h3>
       <TreesList />
       {showTreeForm ? <TreeForm setShowTreeForm={setShowTreeForm}/> 
       :  
@@ -25,5 +33,21 @@ export default function Home() {
         New Tree
       </Button>}
     </Container>
+    :
+    <></>
+    }
+    </>
   )
+}
+
+
+export async function getServerSideProps(context) {
+
+  const session = await getSession(context)
+  return {
+    props: {
+      session,
+      data: session ? 'list of trees' : 'no list'
+    }, // will be passed to the page component as props
+  }
 }
