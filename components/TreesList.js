@@ -13,16 +13,16 @@ const TreesList = ({treeListProps}) => {
     setTreesList(JSON.parse(treeListProps))
   }, [])
 
-  // useEffect(() => {
-  //   const collectionRef = collection(db, "Trees")
+  useEffect(() => {
+    const collectionRef = collection(db, "Trees")
 
-  //   const q = query(collectionRef, orderBy("timestamp", "desc"))
+    const q = query(collectionRef, orderBy("timestamp", "desc"))
 
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     setTreesList(querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })))
-  //   });
-  //   return unsubscribe
-  // }, [])
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      setTreesList(querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })))
+    });
+    return unsubscribe
+  }, [])
 
   return (
     <div>
