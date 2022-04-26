@@ -5,20 +5,24 @@ import { db } from '../firebase/firebase';
 
 import TreeCard from './TreeCard'
 
-const TreesList = () => {
+const TreesList = ({treeListProps}) => {
   // get and set list of trees
   const [treesList, setTreesList] = useState([])
 
   useEffect(() => {
-    const collectionRef = collection(db, "Trees")
-
-    const q = query(collectionRef, orderBy("timestamp", "desc"))
-
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      setTreesList(querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })))
-    });
-    return unsubscribe
+    setTreesList(JSON.parse(treeListProps))
   }, [])
+
+  // useEffect(() => {
+  //   const collectionRef = collection(db, "Trees")
+
+  //   const q = query(collectionRef, orderBy("timestamp", "desc"))
+
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     setTreesList(querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })))
+  //   });
+  //   return unsubscribe
+  // }, [])
 
   return (
     <div>

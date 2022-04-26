@@ -1,14 +1,17 @@
 //import styles from '../styles/Home.module.css'
 import { useState, useEffect } from 'react'
 import { useSession, getSession } from 'next-auth/client'
-
 import { Container, Button } from '@mui/material'
+import { collection, query, where, orderBy, getDocs } from '@firebase/firestore';
 
+// file system imports
+import { db } from '../firebase/firebase'
 import TreesList from '../components/TreesList'
 import TreeForm from '../components/TreeForm'
 
-export default function Home({data}) {
+export default function Home({treeListProps}) {
   const [session, loading] = useSession()
+  // when using server side auth, loading is always false. 
   // console.log('session, loading: ', {session, loading})
   const [showTreeForm, setShowTreeForm] = useState(false)
 
@@ -19,7 +22,7 @@ export default function Home({data}) {
   return (
     <Container maxWidth='xs'>
       <h3>{session.user.name}</h3>
-      <TreesList />
+      <TreesList treeListProps={treeListProps}/>
       {showTreeForm ? <TreeForm setShowTreeForm={setShowTreeForm}/> 
       :  
       <Button 
@@ -47,28 +50,20 @@ export async function getServerSideProps(context) {
     }
   }
 
-  const email = session.user
-  console.log('email from session', email)
+  const email = session.user.email
 
-  // const collectionRef = collection(db, "Trees")
-  // const q = query(collectionRef, where("email", "==", email), orderBy("timestamp", "desc"))
-  // const querySnapshot = await getDocs(q)
-  // let treeList = []
-  // querySnapshot.forEach((doc) => {
-  //   treeList.push({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })
-  // })
-
-  // return {
-  //   props: { 
-  //     session,
-  //     treeListProps: JSON.stringify(treeList) || [], 
-  //   }, // will be passed to the page component as props
-  // }
+  const collectionRef = collection(db, "Trees")
+  const q = query(collectionRef, where("email", "==", email), orderBy("timestamp", "desc"))
+  const querySnapshot = await getDocs(q)
+  let treeList = []
+  querySnapshot.forEach((doc) => {
+    treeList.push({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })
+  })
 
   return {
-    props: {
+    props: { 
       session,
-      data: session ? 'list of trees' : 'no list'
+      treeListProps: JSON.stringify(treeList) || [], 
     }, // will be passed to the page component as props
   }
 }
