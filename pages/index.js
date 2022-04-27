@@ -1,5 +1,5 @@
 //import styles from '../styles/Home.module.css'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useSession, getSession } from 'next-auth/client'
 import { Container, Button } from '@mui/material'
 import { collection, query, where, orderBy, getDocs } from '@firebase/firestore';
@@ -10,7 +10,7 @@ import TreesList from '../components/TreesList'
 import TreeForm from '../components/TreeForm'
 
 export default function Home({treeListProps}) {
-  const [session, loading] = useSession()
+  // const [session, loading] = useSession()
   // when using server side auth, loading is always false. 
   // console.log('session, loading: ', {session, loading})
   const [showTreeForm, setShowTreeForm] = useState(false)
@@ -21,7 +21,6 @@ export default function Home({treeListProps}) {
 
   return (
     <Container maxWidth='xs'>
-      <h3>{session.user.name}</h3>
       <TreesList treeListProps={treeListProps}/>
       {showTreeForm ? <TreeForm setShowTreeForm={setShowTreeForm}/> 
       :  

@@ -3,7 +3,7 @@ import '../styles/globals.css'
 
 import { Provider } from 'next-auth/client'
 
-import Navbar from '../components/Navbar'
+import UserBar from '../components/UserBar'
 import { TreeContext } from './TreeContext'
 
 // pageProps refers to props returned by get serverSideProps for pre-rendering
@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
   <Provider session={pageProps.session}>
-    <Navbar />
+    <UserBar />
     <TreeContext.Provider value={{ newTreeData, setNewTreeData }}>
       <Component {...pageProps} />
     </TreeContext.Provider>
