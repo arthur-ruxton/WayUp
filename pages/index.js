@@ -1,4 +1,5 @@
 //import styles from '../styles/Home.module.css'
+
 import { useState } from 'react'
 import { useSession, getSession } from 'next-auth/client'
 import { Container, Button } from '@mui/material'
@@ -13,6 +14,7 @@ export default function Home({treeListProps}) {
   // const [session, loading] = useSession()
   // when using server side auth, loading is always false. 
   // console.log('session, loading: ', {session, loading})
+
   const [showTreeForm, setShowTreeForm] = useState(false)
 
   const showNewTreeForm = () => {

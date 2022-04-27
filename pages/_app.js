@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }) {
   const [newTreeData, setNewTreeData] = useState({title: '', favourite: false})
 
   return (
+
   <Provider session={pageProps.session}>
     <UserBar />
     <TreeContext.Provider value={{ newTreeData, setNewTreeData }}>

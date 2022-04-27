@@ -3,14 +3,18 @@ import { useSession } from 'next-auth/client'
 import { TextField, Button } from "@mui/material"
 import { collection, addDoc, serverTimestamp} from '@firebase/firestore' // firebase methods 
 
+import { useAuth } from '../Auth'
 import { TreeContext } from '../pages/TreeContext' //context used to create alert messages
 import { db } from '../firebase/firebase' // getting the database
 import { AddIcon, CloseIcon } from "../assets/icons" // getting icons
 
+
 const TreeForm = ({ setShowTreeForm }) => {
+
   const [session] = useSession()
   const email = session.user.email
   console.log('email from session on tree form', email)
+
   // use context because this object is used to create data in multiple places
   const { newTreeData, setNewTreeData } = useContext(TreeContext)
 

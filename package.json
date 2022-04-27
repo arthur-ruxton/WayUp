@@ -18,7 +18,8 @@
     "next": "12.1.5",
     "next-auth": "^3.29.3",
     "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react-dom": "18.0.0",
+    "react-loading": "^2.0.3"
   },
   "devDependencies": {
     "eslint": "8.13.0",
