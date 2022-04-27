@@ -43,6 +43,7 @@ const TreeForm = ({ setShowTreeForm }) => {
       label="title" 
       margin="normal"
       value={setNewTreeData.title}
+      inputProps={{maxLength: 26}}
       onChange={onChange}
       />
       <Button 
