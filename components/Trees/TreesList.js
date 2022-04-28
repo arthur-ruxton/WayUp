@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/client'
 
 import { collection, where, query, orderBy, onSnapshot } from '@firebase/firestore';
-import { db } from '../firebase/firebase';
+import { db } from '../../firebase/firebase';
 
 import TreeCard from './TreeCard'
 

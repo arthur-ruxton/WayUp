@@ -4,8 +4,8 @@ import moment from "moment"
 import { doc, deleteDoc } from '@firebase/firestore'
 import { ListItem, IconButton, ListItemText } from '@mui/material'
 
-import { DeleteIcon } from '../assets/icons'
-import { db } from '../firebase/firebase'
+import { DeleteIcon } from '../../assets/icons'
+import { db } from '../../firebase/firebase'
 
 const TreeCard = ({id, favourite, timestamp, title}) => {
 

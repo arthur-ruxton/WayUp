@@ -1,14 +1,14 @@
 //import styles from '../styles/Home.module.css'
 
 import { useState } from 'react'
-import { useSession, getSession } from 'next-auth/client'
+import { getSession } from 'next-auth/client'
 import { Container, Button } from '@mui/material'
 import { collection, query, where, orderBy, getDocs } from '@firebase/firestore';
 
 // file system imports
 import { db } from '../firebase/firebase'
-import TreesList from '../components/TreesList'
-import TreeForm from '../components/TreeForm'
+import TreesList from '../components/Trees/TreesList'
+import TreeForm from '../components/Trees/TreeForm'
 
 export default function Home({treeListProps}) {
   // const [session, loading] = useSession()

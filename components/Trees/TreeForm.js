@@ -3,9 +3,9 @@ import { useSession } from 'next-auth/client'
 import { TextField, Button } from "@mui/material"
 import { collection, addDoc, serverTimestamp} from '@firebase/firestore' // firebase methods 
 
-import { TreeContext } from '../pages/TreeContext' //context used to create alert messages
-import { db } from '../firebase/firebase' // getting the database
-import { AddIcon, CloseIcon } from "../assets/icons" // getting icons
+import { TreeContext } from '../../pages/TreeContext' //context used to create alert messages
+import { db } from '../../firebase/firebase' // getting the database
+import { AddIcon, CloseIcon } from "../../assets/icons" // getting icons
 
 
 const TreeForm = ({ setShowTreeForm }) => {
