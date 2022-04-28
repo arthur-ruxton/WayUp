@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { getDocs, getDoc, doc, collection, updateDoc, serverTimestamp } from 'firebase/firestore'
+import { getDocs, getDoc, doc, collection, query, where, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { IconButton } from '@mui/material'
 import moment from 'moment'
 
@@ -12,7 +12,7 @@ import { CheckIcon, CloseIcon, StarIcon, StarOutlineIcon, HomeIcon } from '../..
 
 import BranchList from '../../components/Branches/BranchList'
 
-const Contents = ({ treeProps }) => {
+const Contents = ({ treeProps, branchListProps }) => {
   const [currentTree, setCurrentTree] = useState(JSON.parse(treeProps))
   const [editing, setEditing] = useState(false)
 
@@ -71,7 +71,7 @@ const Contents = ({ treeProps }) => {
       {moment(currentTree.timestamp).format("DD MMMM, YYYY ")}
     </p>
     <div>
-      <BranchList treeId={currentTree.id} />
+      <BranchList branchListProps={branchListProps} />
     </div>
   </div>
   )
@@ -126,8 +126,21 @@ export default Contents
     
       const docRef = doc(db, 'Trees', id)
       const docSnap = await getDoc(docRef)
+
+      const collectionRef = collection(db, "Branches")
+      const q = query(collectionRef, where("treeId", "==", id))
+      const querySnapshot = await getDocs(q)
+      let branchList = []
+      querySnapshot.forEach((doc) => {
+        branchList.push({ ...doc.data(), id: doc.id })
+      })
+      console.log('branch list', branchList)
     
       return {
-        props: { treeProps: JSON.stringify({ ...docSnap.data(), id: docSnap.id, timestamp: docSnap.data().timestamp?.toDate().getTime() }) || null}
+        props: { 
+          session,
+          treeProps: JSON.stringify({ ...docSnap.data(), id: docSnap.id, timestamp: docSnap.data().timestamp?.toDate().getTime() }) || null,
+          branchListProps: JSON.stringify(branchList) || [],
+        },
       }
     }
