@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSession } from 'next-auth/client'
 import { Container, Box, IconButton, Avatar, Typography } from '@mui/material'
 
 import { signOut } from 'next-auth/client'
 
 const UserBar = () => {
-  const [session, loading] = useSession()
+  let [session] = useSession()
   
   return (
     <Container maxWidth='xs'>

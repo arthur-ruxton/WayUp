@@ -10,6 +10,8 @@ import { db } from '../../firebase/firebase'
 import { TreeContext } from '../../pages/TreeContext'
 import { CheckIcon, CloseIcon, StarIcon, StarOutlineIcon, HomeIcon } from '../../assets/icons'
 
+import BranchList from '../../components/Branches/BranchList'
+
 const Contents = ({ treeProps }) => {
   const [currentTree, setCurrentTree] = useState(JSON.parse(treeProps))
   const [editing, setEditing] = useState(false)
@@ -68,6 +70,9 @@ const Contents = ({ treeProps }) => {
     <p>
       {moment(currentTree.timestamp).format("DD MMMM, YYYY ")}
     </p>
+    <div>
+      <BranchList treeId={currentTree.id} />
+    </div>
   </div>
   )
 }
