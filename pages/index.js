@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { getSession } from 'next-auth/client'
-import { Container, Button } from '@mui/material'
 import { collection, query, where, orderBy, getDocs } from '@firebase/firestore';
+import { Container, Button } from '@mui/material'
 
 // file system imports
 import { db } from '../firebase/firebase'
