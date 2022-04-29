@@ -9,7 +9,7 @@ import { db } from '../../firebase/firebase'
 import { TreeContext } from '../../pages/TreeContext'
 import { CheckIcon, CloseIcon, StarIcon, StarOutlineIcon, HomeIcon } from '../../assets/icons'
 
-const TreeHeader = ({ currentTree }) => {
+const TreeHeader = ({ currentTree, setCurrentTree }) => {
   const [editing, setEditing] = useState(false)
 
   // use context because this object used on different pages

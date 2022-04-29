@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getDocs, getDoc, doc, collection, query, where } from 'firebase/firestore'
 
 import { getSession } from 'next-auth/client'
@@ -9,11 +9,15 @@ import TreeHeader from '../../components/Trees/TreeHeader'
 import BranchList from '../../components/Branches/BranchList'
 
 const Contents = ({ treeProps, branchListProps }) => {
-  const [currentTree, setCurrentTree] = useState(JSON.parse(treeProps))
+  const [currentTree, setCurrentTree] = useState({})
+
+  useEffect(() => {
+    setCurrentTree(JSON.parse(treeProps))
+  }, [])
 
   return (
   <div>
-    <TreeHeader currentTree={currentTree} />
+    <TreeHeader currentTree={currentTree} setCurrentTree={setCurrentTree} />
     <BranchList branchListProps={branchListProps} />
   </div>
   )
