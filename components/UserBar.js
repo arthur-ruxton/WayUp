@@ -8,8 +8,8 @@ const UserBar = () => {
   let [session] = useSession()
   
   return (
-    <Container maxWidth='xs'>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }} mt={3}>
+    <Container>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: '1rem' }} mt={3}>
         <IconButton onClick={e => {
             e.preventDefault()
             signOut()
