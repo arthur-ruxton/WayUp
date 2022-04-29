@@ -10,7 +10,7 @@ import TreeHeader from '../../components/Trees/TreeHeader'
 import BranchList from '../../components/Branches/BranchList'
 import BranchForm from '../../components/Branches/BranchForm'
 
-const Contents = ({ treeProps, branchListProps }) => {
+const Contents = ({ treeProps, branchListProps, leafListProps }) => {
   const [currentTree, setCurrentTree] = useState({})
   const [showBranchForm, setShowBranchForm] = useState(false)
 
@@ -25,7 +25,7 @@ const Contents = ({ treeProps, branchListProps }) => {
   return (
   <Container>
     <TreeHeader currentTree={currentTree} setCurrentTree={setCurrentTree} />
-    <BranchList branchListProps={branchListProps} treeId={currentTree.id}/>
+    <BranchList branchListProps={branchListProps} leafListProps={leafListProps} treeId={currentTree.id}/>
     {
       showBranchForm ? <BranchForm setShowBranchForm={setShowBranchForm} treeId={currentTree.id}/> :
       <Button 
@@ -61,20 +61,30 @@ export default Contents
     const docRef = doc(db, 'Trees', id)
     const docSnap = await getDoc(docRef)
 
-    const collectionRef = collection(db, "Branches")
-    const q = query(collectionRef, where("treeId", "==", id))
-    const querySnapshot = await getDocs(q)
+    const branchesRef = collection(db, "Branches")
+    const branchesQ = query(branchesRef, where("treeId", "==", id))
+    const branchesQuerySnapshot = await getDocs(branchesQ)
     let branchList = []
-    querySnapshot.forEach((doc) => {
+    branchesQuerySnapshot.forEach((doc) => {
       branchList.push({ ...doc.data(), id: doc.id })
     })
-    console.log('branch list', branchList)
+    //console.log('branch list', branchList)
+
+    const leavesRef = collection(db, "Leaves")
+    //const leavesQ = query(leavesRef, where("treeId", "==", id))
+    const leavesQuerySnapshot = await getDocs(leavesRef)
+    let leafList = []
+    leavesQuerySnapshot.forEach((doc) => {
+      leafList.push({ ...doc.data(), id: doc.id })
+    })
+    // console.log('leaf list server side', leafList)
   
     return {
       props: { 
         session,
         treeProps: JSON.stringify({ ...docSnap.data(), id: docSnap.id, timestamp: docSnap.data().timestamp?.toDate().getTime() }) || null,
         branchListProps: JSON.stringify(branchList) || [],
+        leafListProps: JSON.stringify(leafList) || [],
       },
     }
   }
