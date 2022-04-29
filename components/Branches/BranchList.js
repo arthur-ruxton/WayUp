@@ -6,13 +6,15 @@ import { db } from '../../firebase/firebase';
 
 import BranchCard from './BranchCard'
 
-const BranchList = ({branchListProps, treeId}) => {
+const BranchList = ({branchListProps, leafListProps, treeId}) => {
 
   // get and set list of trees
   const [branchList, setBranchList] = useState([])
+  const [totalLeafList, setTotalLeafList] = useState([])
 
   useEffect(() => {
     setBranchList(JSON.parse(branchListProps))
+    setTotalLeafList(JSON.parse(leafListProps))
   }, [])
 
   useEffect(() => {
@@ -33,7 +35,11 @@ const BranchList = ({branchListProps, treeId}) => {
     <Grid sx={{ flexGrow: 1 }} container spacing={2}>
       {branchList.map(branch => (
        <Grid item key={branch.id}>
-          <BranchCard thisBranch={branch}/>
+          <BranchCard 
+          thisBranch={branch} 
+          treeId={treeId}
+          leafList={totalLeafList.filter(leaf => leaf.branchId === branch.id)}
+          />
        </Grid>
       ))}
     </Grid>

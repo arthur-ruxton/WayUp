@@ -4,9 +4,9 @@ import { Card, CardContent, Typography, CardActions, IconButton, TextField } fro
 
 import { CheckIcon, CloseIcon, DeleteIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
+import LeafList from '../Leaves/LeafList'
 
-
-const BranchCard = ({thisBranch}) => {
+const BranchCard = ({thisBranch, leafList}) => {
   const [editing, setEditing] = useState()
   const [newBranchData, setNewBranchData] = useState({})
   const [currentBranch, setCurrentBranch] = useState(thisBranch)
@@ -66,6 +66,7 @@ const BranchCard = ({thisBranch}) => {
             </IconButton>
             </>)
         }
+        <LeafList leafList={leafList} />
       </CardContent>
       <CardActions disableSpacing>
         <IconButton  onClick={e => onDelete(e)}>
