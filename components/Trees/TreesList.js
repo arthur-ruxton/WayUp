@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/client'
+import { Grid, Item } from '@mui/material';
 
 import { collection, where, query, orderBy, onSnapshot } from '@firebase/firestore';
 import { db } from '../../firebase/firebase';
@@ -31,15 +32,18 @@ const TreesList = ({treeListProps}) => {
 
   return (
     <div>
-      {treesList.map(tree => (
-        <TreeCard
-          key={tree.id} 
-          id={tree.id} 
-          favourite={tree.favourite} 
-          timestamp={tree.timestamp} 
-          title={tree.title}
-          />
-      ))}
+      <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+        {treesList.map(tree => (
+         <Grid item key={tree.id}>
+            <TreeCard
+            id={tree.id} 
+            favourite={tree.favourite} 
+            timestamp={tree.timestamp} 
+            title={tree.title}
+            />
+         </Grid>
+        ))}
+      </Grid>
     </div>
   )
 }

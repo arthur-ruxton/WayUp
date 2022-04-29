@@ -22,7 +22,7 @@ export default function Home({treeListProps}) {
   }
 
   return (
-    <Container maxWidth='xs'>
+    <Container>
       <TreesList treeListProps={treeListProps}/>
       {showTreeForm ? <TreeForm setShowTreeForm={setShowTreeForm}/> 
       :  
