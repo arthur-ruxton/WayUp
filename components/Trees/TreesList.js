@@ -31,7 +31,7 @@ const TreesList = ({treeListProps}) => {
   }, [])
 
   return (
-    <div>
+    <>
       <Grid sx={{ flexGrow: 1 }} container spacing={2}>
         {treesList.map(tree => (
          <Grid item key={tree.id}>
@@ -44,7 +44,7 @@ const TreesList = ({treeListProps}) => {
          </Grid>
         ))}
       </Grid>
-    </div>
+    </>
   )
 }
 

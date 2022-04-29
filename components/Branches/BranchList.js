@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { Grid, Item } from '@mui/material';
 
-import { collection, where, query, onSnapshot } from '@firebase/firestore';
-import { db } from '../../firebase/firebase';
+// import { collection, where, query, onSnapshot } from '@firebase/firestore';
+// import { db } from '../../firebase/firebase';
 
-// import BranchCard from './BranchCard'
+import BranchCard from './BranchCard'
 
 const BranchList = ({branchListProps}) => {
 
@@ -16,22 +17,21 @@ const BranchList = ({branchListProps}) => {
  
 
   return (
-    <div>
-      <ul>
-        {branchList.map(branch => (
-          // <BranchCard
-          //   key={branch.id} 
-          //   id={branch.id} 
-          //   favourite={branch.favourite} 
-          //   timestamp={branch.timestamp} 
-          //   title={branch.title}
-          //   />
-          <li key={branch.id}>
-            <h1>{branch.title} hello world</h1>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+    <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+      {branchList.map(branch => (
+       <Grid item key={branch.id}>
+          <BranchCard
+          key={branch.id} 
+          id={branch.id} 
+          favourite={branch.favourite} 
+          timestamp={branch.timestamp} 
+          title={branch.title}
+          />
+       </Grid>
+      ))}
+    </Grid>
+  </>
   )
 }
 
