@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/client'
-import { Grid, Item } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import { collection, where, query, orderBy, onSnapshot } from '@firebase/firestore';
 import { db } from '../../firebase/firebase';
@@ -24,10 +24,10 @@ const TreesList = ({treeListProps}) => {
 
     const q = query(collectionRef, where("email", "==", email), orderBy("timestamp", "desc"))
 
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const snap = onSnapshot(q, (querySnapshot) => {
       setTreesList(querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })))
     });
-    return unsubscribe
+    return snap
   }, [])
 
   return (
