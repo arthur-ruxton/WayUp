@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { doc, deleteDoc, updateDoc } from '@firebase/firestore'
 import { Card, CardContent, Typography, CardActions, IconButton, TextField } from '@mui/material'
 
-import { CheckIcon, CloseIcon, StarIcon, StarOutlineIcon, HomeIcon, DeleteIcon } from '../../assets/icons'
+import { CheckIcon, CloseIcon, DeleteIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
-
 
 
 const BranchCard = ({thisBranch}) => {
@@ -35,7 +34,7 @@ const BranchCard = ({thisBranch}) => {
    // deletes entire Trees (Projects)
    const onDelete = async(e) => {
     e.stopPropagation();
-    const docRef = doc(db, "Branches", id)
+    const docRef = doc(db, "Branches", thisBranch.id)
     await deleteDoc(docRef)
   }
 
