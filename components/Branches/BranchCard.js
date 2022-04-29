@@ -1,12 +1,36 @@
-import React from 'react'
-import { doc, deleteDoc } from '@firebase/firestore'
-import { Card, CardContent, Typography, CardActions, IconButton } from '@mui/material'
+import React, { useState } from 'react'
+import { doc, deleteDoc, updateDoc } from '@firebase/firestore'
+import { Card, CardContent, Typography, CardActions, IconButton, TextField } from '@mui/material'
 
-import { DeleteIcon } from '../../assets/icons'
+import { CheckIcon, CloseIcon, StarIcon, StarOutlineIcon, HomeIcon, DeleteIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
 
-const BranchCard = ({id, title}) => {
 
+
+const BranchCard = ({thisBranch}) => {
+  const [editing, setEditing] = useState()
+  const [newBranchData, setNewBranchData] = useState({})
+  const [currentBranch, setCurrentBranch] = useState(thisBranch)
+
+   // functionality for editing the trees title.
+   const onEditButtonClick = () => {
+    setEditing(true)
+  }
+  const onTitleChange = (e) => {
+    setNewBranchData({...currentBranch, title: e.target.value})
+  }
+  const onSaveButtonClick = async() => {
+    setEditing(false)
+    const docRef = doc(db, "Branches", currentBranch.id)
+    const updatedBranch = {...newBranchData}
+    setCurrentBranch(updatedBranch)
+    await updateDoc(docRef, updatedBranch)
+    setNewBranchData({title: '', favourite: false})
+  }
+  const onCancleEdit = () => {
+    setEditing(false)
+    setNewBranchData({title: '', favourite: false})
+  }
 
    // deletes entire Trees (Projects)
    const onDelete = async(e) => {
@@ -22,9 +46,27 @@ const BranchCard = ({id, title}) => {
       style={{ backgroundColor: '#FAFAFA' }}
     >
       <CardContent>
-      <Typography>
-        {title}
-      </Typography>
+        {
+          !editing ?
+          <Typography onClick={onEditButtonClick}>
+            {currentBranch.title}
+          </Typography> :
+          (<>
+            <TextField 
+              id="outlined-basic" 
+              label={currentBranch.title} 
+              variant="outlined" 
+              type='text' 
+              onChange={onTitleChange}
+            />
+            <IconButton onClick={onSaveButtonClick}>
+              <CheckIcon/>
+            </IconButton>
+            <IconButton onClick={onCancleEdit}>
+              <CloseIcon/>
+            </IconButton>
+            </>)
+        }
       </CardContent>
       <CardActions disableSpacing>
         <IconButton  onClick={e => onDelete(e)}>

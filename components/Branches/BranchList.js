@@ -22,11 +22,11 @@ const BranchList = ({branchListProps}) => {
       {branchList.map(branch => (
        <Grid item key={branch.id}>
           <BranchCard
-          key={branch.id} 
-          id={branch.id} 
-          favourite={branch.favourite} 
-          timestamp={branch.timestamp} 
-          title={branch.title}
+          // id={branch.id} 
+          // favourite={branch.favourite} 
+          // timestamp={branch.timestamp} 
+          // title={branch.title}
+          thisBranch={branch}
           />
        </Grid>
       ))}
