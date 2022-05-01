@@ -42,6 +42,12 @@ const BranchCard = ({thisBranch, leafList}) => {
     e.stopPropagation();
     const docRef = doc(db, "Branches", thisBranch.id)
     await deleteDoc(docRef)
+
+    const deleteLeaf = async(leaf) => {
+      const docRef = doc(db, "Leaves", leaf.id)
+      await deleteDoc(docRef)
+    }
+    await leafList.forEach(leaf => deleteLeaf(leaf)) 
   }
 
   return (
