@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import moment from "moment"
-import { doc, deleteDoc } from '@firebase/firestore'
+import { doc, deleteDoc, collection, query, where, getDocs } from '@firebase/firestore'
 //import { ListItem, IconButton, ListItemText } from '@mui/material'
 import { Card, CardContent, Typography, CardActions, IconButton } from '@mui/material'
 
@@ -13,8 +13,33 @@ const TreeCard = ({id, favourite, timestamp, title}) => {
   // deletes entire Trees (Projects)
   const onDelete = async(e) => {
     e.stopPropagation();
-    const docRef = doc(db, "Trees", id)
-    await deleteDoc(docRef)
+    const treeRef = doc(db, "Trees", id)
+    await deleteDoc(treeRef)
+
+    // create lists of branches and leaves related to this tree 
+    const branchesRef = collection(db, "Branches")
+    const branchesQ = query(branchesRef, where("treeId", "==", id))
+    const branchesQuerySnapshot = await getDocs(branchesQ)
+    let branchList = []
+    branchesQuerySnapshot.forEach((doc) => {
+      branchList.push({ ...doc.data(), id: doc.id })
+    })
+
+    const leavesRef = collection(db, "Leaves")
+    const leavesQ = query(leavesRef, where("treeId", "==", id))
+    const leavesQuerySnapshot = await getDocs(leavesQ)
+    let leafList = []
+    leavesQuerySnapshot.forEach((doc) => {
+      leafList.push({ ...doc.data(), id: doc.id })
+    })
+
+    // from other collections, delete branches related to this tree
+    const deleteChild = async(item, collection) => {
+      const docRef = doc(db, collection, item.id)
+      await deleteDoc(docRef)
+    }
+    branchList.forEach(branch => deleteChild(branch, "Branches"))
+    leafList.forEach(leaf => deleteChild(leaf, "Leaves"))
   }
 
   // route to individual Tree page
