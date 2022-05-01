@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { TextField, Button } from "@mui/material"
-import { collection, addDoc, serverTimestamp} from '@firebase/firestore' // firebase methods 
+import { collection, addDoc} from '@firebase/firestore' // firebase methods 
 
 import { db } from '../../firebase/firebase' // getting the database
 import { AddIcon, CloseIcon } from "../../assets/icons" // getting icons
