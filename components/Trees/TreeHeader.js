@@ -6,33 +6,33 @@ import moment from 'moment'
 
 // imports from project files including icons
 import { db } from '../../firebase/firebase'
-import { TreeContext } from '../../pages/TreeContext'
+import { DataContext } from '../../pages/DataContext'
 import { CheckIcon, CloseIcon, StarIcon, StarOutlineIcon, HomeIcon } from '../../assets/icons'
 
 const TreeHeader = ({ currentTree, setCurrentTree }) => {
   const [editing, setEditing] = useState(false)
 
   // use context because this object used on different pages
-  const { newTreeData, setNewTreeData } = useContext(TreeContext)
+  const { newData, setNewData } = useContext(DataContext)
 
   // functionality for editing the trees title.
   const onEditButtonClick = () => {
     setEditing(true)
   }
   const onTitleChange = (e) => {
-    setNewTreeData({...currentTree, title: e.target.value})
+    setNewData({...currentTree, text: e.target.value})
   }
   const onSaveButtonClick = async() => {
     setEditing(false)
     const docRef = doc(db, "Trees", currentTree.id)
-    const updatedTree = { ...newTreeData, timestamp: serverTimestamp()}
+    const updatedTree = { ...newData, timestamp: serverTimestamp()}
     setCurrentTree(updatedTree)
     await updateDoc(docRef, updatedTree)
-    setNewTreeData({title: '', favourite: false})
+    setNewData({text: '', highlight: false})
   }
   const onCancleEdit = () => {
     setEditing(false)
-    setNewTreeData({title: '', favourite: false})
+    setNewData({text: '', highlight: false})
   }
 
   return (
@@ -40,12 +40,12 @@ const TreeHeader = ({ currentTree, setCurrentTree }) => {
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '1rem' }} mt={3}>
         {!editing ?
         <Typography variant='h5' onClick={onEditButtonClick}>
-          {currentTree.title}  
+          {currentTree.text}  
         </Typography> :
         (<>
           <TextField 
             id="outlined-basic" 
-            label={currentTree.title} 
+            label={currentTree.text} 
             variant="outlined" 
             type='text' 
             onChange={onTitleChange}
@@ -58,7 +58,7 @@ const TreeHeader = ({ currentTree, setCurrentTree }) => {
           </IconButton>
           </>)
         }
-        {!currentTree.favourite ? 
+        {!currentTree.highlight ? 
           <IconButton>
             <StarOutlineIcon/>
           </IconButton>

@@ -39,7 +39,7 @@ const TreesList = ({treeListProps}) => {
             id={tree.id} 
             favourite={tree.favourite} 
             timestamp={tree.timestamp} 
-            title={tree.title}
+            text={tree.text}
             />
          </Grid>
         ))}
