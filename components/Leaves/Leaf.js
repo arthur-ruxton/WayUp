@@ -4,14 +4,15 @@ import { ListItem, IconButton, ListItemText } from '@mui/material'
 import { DeleteIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
 
-const Leaf = ({thisLeaf}) => {
+const Leaf = ({thisLeaf, branchId, treeId}) => {
 
   // deletes entire Trees (Projects)
   const onDelete = async(e) => {
     e.stopPropagation();
-    const docRef = doc(db, "Trees", thisLeaf.id)
+    const docRef = doc(db, "Leaves", thisLeaf.id)
     await deleteDoc(docRef)
   }
+
   return (
     <ListItem
       sx={{ mt: 3, boxShadow: 3 }}
