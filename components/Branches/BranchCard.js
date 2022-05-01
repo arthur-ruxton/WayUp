@@ -1,20 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { doc, deleteDoc, updateDoc } from '@firebase/firestore'
 import { Card, CardContent, Typography, Button, CardActions, IconButton, TextField } from '@mui/material'
 
 import { CheckIcon, CloseIcon, DeleteIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
+import { DataContext } from '../../pages/DataContext'
 import LeafList from '../Leaves/LeafList'
-import LeafForm from '../Leaves/LeafForm'
+// import LeafForm from '../Leaves/LeafForm'
+import NewDataForm from '../../components/NewDataForm'
 
 const BranchCard = ({thisBranch, leafList}) => {
   const [editing, setEditing] = useState()
-  const [newBranchData, setNewBranchData] = useState({})
   const [currentBranch, setCurrentBranch] = useState(thisBranch)
-  const [showLeafForm, setShowLeafForm] = useState(false)
+  const [showForm, setShowForm] = useState(false)
 
-  const showNewLeafForm = () => {
-    setShowLeafForm(true)
+  const { newData, setNewData } = useContext(DataContext)
+
+  const showNewForm = () => {
+    setShowForm(true)
   }
 
    // functionality for editing the trees title.
@@ -22,19 +25,19 @@ const BranchCard = ({thisBranch, leafList}) => {
     setEditing(true)
   }
   const onTitleChange = (e) => {
-    setNewBranchData({...currentBranch, title: e.target.value})
+    setNewData({...currentBranch, text: e.target.value})
   }
   const onSaveButtonClick = async() => {
     setEditing(false)
     const docRef = doc(db, "Branches", currentBranch.id)
-    const updatedBranch = {...newBranchData}
+    const updatedBranch = {...newData}
     setCurrentBranch(updatedBranch)
     await updateDoc(docRef, updatedBranch)
-    setNewBranchData({title: '', favourite: false})
+    setNewData({text: '', highlight: false})
   }
   const onCancleEdit = () => {
     setEditing(false)
-    setNewBranchData({title: '', favourite: false})
+    setNewData({text: '', highlight: false})
   }
 
    // deletes entire Trees (Projects)
@@ -60,12 +63,12 @@ const BranchCard = ({thisBranch, leafList}) => {
         {
           !editing ?
           <Typography onClick={onEditButtonClick}>
-            {currentBranch.title}
+            {currentBranch.text}
           </Typography> :
           (<>
             <TextField 
               id="outlined-basic" 
-              label={currentBranch.title} 
+              label={currentBranch.text} 
               variant="outlined" 
               type='text' 
               onChange={onTitleChange}
@@ -80,11 +83,20 @@ const BranchCard = ({thisBranch, leafList}) => {
         }
         <LeafList leafList={leafList} branchId={currentBranch.id} treeId={currentBranch.treeId}/>
         {
-          showLeafForm ? <LeafForm setShowLeafForm={setShowLeafForm} branchId={currentBranch.id} treeId={currentBranch.treeId}/> :
+          showForm ? 
+          <NewDataForm 
+            setShowForm={setShowForm} 
+            branchId={currentBranch.id}
+            treeId={currentBranch.treeId}
+            dataCollection="Leaves" 
+            type="leaf" 
+            maxLength={250}
+          />
+          :
           <Button 
             variant="contained" 
             sx={{ mt: 3 }}
-            onClick={showNewLeafForm}
+            onClick={showNewForm}
           >
             New Leaf
           </Button>

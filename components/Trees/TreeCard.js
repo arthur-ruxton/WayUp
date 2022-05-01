@@ -8,7 +8,7 @@ import { Card, CardContent, Typography, CardActions, IconButton } from '@mui/mat
 import { DeleteIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
 
-const TreeCard = ({id, favourite, timestamp, title}) => {
+const TreeCard = ({id, favourite, timestamp, text}) => {
 
   // deletes entire Trees (Projects)
   const onDelete = async(e) => {
@@ -58,8 +58,8 @@ const TreeCard = ({id, favourite, timestamp, title}) => {
         style={{ backgroundColor: '#FAFAFA' }}
       >
         <CardContent>
-        <Typography>
-          {title}
+        <Typography variant='h5'>
+          {text}
         </Typography>
         <Typography>
           {moment(timestamp).format("DD MMMM, YYYY ")}

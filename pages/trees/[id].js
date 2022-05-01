@@ -8,14 +8,14 @@ import { getSession } from 'next-auth/client'
 import { db } from '../../firebase/firebase'
 import TreeHeader from '../../components/Trees/TreeHeader'
 import BranchList from '../../components/Branches/BranchList'
-import BranchForm from '../../components/Branches/BranchForm'
+import NewDataForm from '../../components/NewDataForm'
 
 const Contents = ({ treeProps, branchListProps, leafListProps }) => {
   const [currentTree, setCurrentTree] = useState({})
-  const [showBranchForm, setShowBranchForm] = useState(false)
+  const [showForm, setShowForm] = useState(false)
 
-  const showNewBranchForm = () => {
-    setShowBranchForm(true)
+  const showNewForm = () => {
+    setShowForm(true)
   }
 
   useEffect(() => {
@@ -27,11 +27,19 @@ const Contents = ({ treeProps, branchListProps, leafListProps }) => {
     <TreeHeader currentTree={currentTree} setCurrentTree={setCurrentTree} />
     <BranchList branchListProps={branchListProps} leafListProps={leafListProps} treeId={currentTree.id}/>
     {
-      showBranchForm ? <BranchForm setShowBranchForm={setShowBranchForm} treeId={currentTree.id}/> :
+      showForm ? 
+      <NewDataForm 
+        setShowForm={setShowForm} 
+        treeId={currentTree.id}
+        dataCollection="Branches" 
+        type="branch" 
+        maxLength={26}
+      />
+      :
       <Button 
         variant="contained" 
         sx={{ mt: 3 }}
-        onClick={showNewBranchForm}
+        onClick={showNewForm}
       >
         New Branch
       </Button>

@@ -1,5 +1,4 @@
 //import styles from '../styles/Home.module.css'
-
 import { useState } from 'react'
 import { getSession } from 'next-auth/client'
 import { collection, query, where, orderBy, getDocs } from '@firebase/firestore';
@@ -8,28 +7,31 @@ import { Container, Button } from '@mui/material'
 // file system imports
 import { db } from '../firebase/firebase'
 import TreesList from '../components/Trees/TreesList'
-import TreeForm from '../components/Trees/TreeForm'
+import NewDataForm from '../components/NewDataForm';
 
 export default function Home({treeListProps}) {
-  // const [session, loading] = useSession()
-  // when using server side auth, loading is always false. 
-  // console.log('session, loading: ', {session, loading})
 
-  const [showTreeForm, setShowTreeForm] = useState(false)
+  const [showForm, setShowForm] = useState(false)
 
-  const showNewTreeForm = () => {
-    setShowTreeForm(true)
+  const showNewForm = () => {
+    setShowForm(true)
   }
 
   return (
     <Container>
       <TreesList treeListProps={treeListProps}/>
-      {showTreeForm ? <TreeForm setShowTreeForm={setShowTreeForm}/> 
+      {showForm ?  
+      <NewDataForm 
+        setShowForm={setShowForm} 
+        dataCollection="Trees" 
+        type="tree" 
+        maxLength={26}
+      />
       :  
       <Button 
         variant="contained" 
         sx={{ mt: 3 }}
-        onClick={showNewTreeForm}
+        onClick={showNewForm}
       >
         New Tree
       </Button>}
