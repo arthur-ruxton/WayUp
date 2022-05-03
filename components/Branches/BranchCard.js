@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react'
 import { doc, deleteDoc, updateDoc } from '@firebase/firestore'
-import { Card, CardContent, Typography, Button, CardActions, IconButton, TextField } from '@mui/material'
+import { Card, CardContent, Typography, CardActions, IconButton, TextField } from '@mui/material'
 
-import { CheckIcon, CloseIcon, DeleteIcon } from '../../assets/icons'
+import { CheckIcon, CloseIcon, DeleteIcon, AddIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
 import { DataContext } from '../../pages/DataContext'
 import LeafList from '../Leaves/LeafList'
@@ -93,13 +93,14 @@ const BranchCard = ({thisBranch, leafList}) => {
             maxLength={250}
           />
           :
-          <Button 
-            variant="contained" 
-            sx={{ mt: 3 }}
+          <IconButton 
+            size="large"
+            variant="outlined" 
+            sx={{ mt: 3, alignItems: "center"}}
             onClick={showNewForm}
           >
-            New Leaf
-          </Button>
+            <AddIcon />
+          </IconButton>
         }
       </CardContent>
       <CardActions disableSpacing>
