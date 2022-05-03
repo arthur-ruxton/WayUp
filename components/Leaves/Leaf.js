@@ -48,7 +48,7 @@ const Leaf = ({thisLeaf}) => {
       (
         <>
           <ListItem
-            sx={{ flexGrow: 1, maxWidth: 250, mt: 3, boxShadow: 3 }}
+            sx={{ flexGrow: 1, maxWidth: 250, mt: 2, boxShadow: 2 }}
             style={{ backgroundColor: '#FAFAFA' }}
             secondaryAction={
               <>
@@ -58,11 +58,6 @@ const Leaf = ({thisLeaf}) => {
               </>
             }
           >
-          {/* <ListItemText
-          sx={{ maxWidth: '90%', overflow: "hidden", textOverflow: 'ellipsis' }}
-          onClick={onEditButtonClick}
-          primary={thisLeaf.text}
-          />  */}
           <ListItemText sx={{ maxWidth: '90%'}}>
             <div style={{ overflow: "hidden", textOverflow: 'ellipsis' }} onClick={onEditButtonClick}>
               {thisLeaf.text}
