@@ -2,18 +2,18 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CheckIcon from '@mui/icons-material/Check';
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import CloseIcon from '@mui/icons-material/Close';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import StarIcon from '@mui/icons-material/Star';
 import HomeIcon from '@mui/icons-material/Home';
-import GoogleIcon from '@mui/icons-material/Google';
 
 export { AddIcon }
 export { DeleteIcon }
 export { MoreVertIcon }
 export { CheckIcon }
+export { OpenInFullIcon }
 export { CloseIcon }
 export { StarIcon }
 export { StarOutlineIcon }
 export { HomeIcon }
-export { GoogleIcon }
