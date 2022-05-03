@@ -4,12 +4,10 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 import { getFirestore  } from "firebase/firestore"
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyA4-AKVwL5dhfkOBDiY0ka8NwCP1D5kDKo",
-  authDomain: "posit-tree.firebaseapp.com",
   projectId: "posit-tree",
   storageBucket: "posit-tree.appspot.com",
   messagingSenderId: "1002023640843",
@@ -19,8 +17,4 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();
-const auth = getAuth();
-const provider = new GoogleAuthProvider
 export { db }
-export { auth }
-export { provider }
