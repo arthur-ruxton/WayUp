@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { doc, deleteDoc, updateDoc } from '@firebase/firestore'
-import { Card, CardContent, Typography, Button, CardActions, IconButton, TextField } from '@mui/material'
+import { Card, CardContent, Typography, CardActions, IconButton, TextField } from '@mui/material'
 
 import { CheckIcon, CloseIcon, DeleteIcon, AddIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'

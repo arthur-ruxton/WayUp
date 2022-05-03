@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { getDocs, getDoc, doc, collection, query, where } from 'firebase/firestore'
-import { Container, Button } from '@mui/material'
+import { Container, IconButton } from '@mui/material'
 
 import { getSession } from 'next-auth/client'
 
 // file system imports 
+import { AddIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
 import TreeHeader from '../../components/Trees/TreeHeader'
 import BranchList from '../../components/Branches/BranchList'
@@ -36,13 +37,13 @@ const Contents = ({ treeProps, branchListProps, leafListProps }) => {
         maxLength={26}
       />
       :
-      <Button 
+      <IconButton 
         variant="contained" 
         sx={{ mt: 3 }}
         onClick={showNewForm}
       >
-        New Branch
-      </Button>
+        <AddIcon />
+      </IconButton>
     }
   </Container>
   )
