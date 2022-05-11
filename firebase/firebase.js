@@ -7,11 +7,11 @@ import { getFirestore  } from "firebase/firestore"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA4-AKVwL5dhfkOBDiY0ka8NwCP1D5kDKo",
-  projectId: "posit-tree",
-  storageBucket: "posit-tree.appspot.com",
-  messagingSenderId: "1002023640843",
-  appId: "1:1002023640843:web:4701799362ef1934b28c0e"
+  apiKey: "AIzaSyDlr9hD0iTE9tFbP6F0BL8evb3zXMauo_Q",
+  projectId: "wayup-fe4d7",
+  storageBucket: "wayup-fe4d7.appspot.com",
+  messagingSenderId: "363315687532",
+  appId: "1:363315687532:web:2e45a6d4e7e2cc44f4a849"
 };
 
 // Initialize Firebase
