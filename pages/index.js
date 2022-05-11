@@ -1,15 +1,15 @@
 //import styles from '../styles/Home.module.css'
 import { useState } from 'react'
 import { getSession } from 'next-auth/client'
-import { collection, query, where, orderBy, getDocs } from '@firebase/firestore';
+// import { collection, query, where, orderBy, getDocs } from '@firebase/firestore';
 import { Container, Button } from '@mui/material'
 
 // file system imports
-import { db } from '../firebase/firebase'
-import TreesList from '../components/Trees/TreesList'
-import NewDataForm from '../components/NewDataForm';
+// import { db } from '../firebase/firebase'
+// import TreesList from '../components/Trees/TreesList'
+// import NewDataForm from '../components/NewDataForm';
 
-export default function Home({treeListProps}) {
+export default function Home({session}) {
 
   const [showForm, setShowForm] = useState(false)
 
@@ -19,22 +19,7 @@ export default function Home({treeListProps}) {
 
   return (
     <Container>
-      <TreesList treeListProps={treeListProps}/>
-      {showForm ?  
-      <NewDataForm 
-        setShowForm={setShowForm} 
-        dataCollection="Trees" 
-        type="tree" 
-        maxLength={26}
-      />
-      :  
-      <Button 
-        variant="contained" 
-        sx={{ mt: 3 }}
-        onClick={showNewForm}
-      >
-        New Tree
-      </Button>}
+      <h1>hello world</h1>
     </Container>
   )
 }
@@ -55,18 +40,18 @@ export async function getServerSideProps(context) {
 
   const email = session.user.email
 
-  const collectionRef = collection(db, "Trees")
-  const q = query(collectionRef, where("email", "==", email), orderBy("timestamp", "desc"))
-  const querySnapshot = await getDocs(q)
-  let treeList = []
-  querySnapshot.forEach((doc) => {
-    treeList.push({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })
-  })
+  // const collectionRef = collection(db, "Trees")
+  // const q = query(collectionRef, where("email", "==", email), orderBy("timestamp", "desc"))
+  // const querySnapshot = await getDocs(q)
+  // let treeList = []
+  // querySnapshot.forEach((doc) => {
+  //   treeList.push({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })
+  // })
 
   return {
     props: { 
       session,
-      treeListProps: JSON.stringify(treeList) || [], 
+      // treeListProps: JSON.stringify(treeList) || [], 
     }, // will be passed to the page component as props
   }
 }
