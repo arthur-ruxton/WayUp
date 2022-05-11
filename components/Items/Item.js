@@ -7,26 +7,26 @@ import { CheckIcon, CloseIcon, DeleteIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
 import { DataContext } from '../../pages/DataContext'
 
-const Leaf = ({thisLeaf}) => {
+const Item = ({thisItem}) => {
   const [editing, setEditing] = useState()
-  // const [newLeafData, setNewLeafData] = useState({})
-  const [currentLeaf, setCurrentLeaf] = useState(thisLeaf)
+  // const [newitemData, setNewitemData] = useState({})
+  const [currentItem, setCurrentItem] = useState(thisItem)
 
   const { newData, setNewData } = useContext(DataContext)
 
-   // functionality for editing the leaf conent.
+   // functionality for editing the item conent.
    const onEditButtonClick = () => {
     setEditing(true)
   }
   const onConentChange = (e) => {
-    setNewData({...currentLeaf, text: e.target.value})
+    setNewData({...currentItem, text: e.target.value})
   }
   const onSaveButtonClick = async() => {
     setEditing(false)
-    const docRef = doc(db, "Leaves", currentLeaf.id)
-    const updatedLeaf = {...newData}
-    setCurrentLeaf(updatedLeaf)
-    await updateDoc(docRef, updatedLeaf)
+    const docRef = doc(db, "Items", currentItem.id)
+    const updatedItem = {...newData}
+    setCurrentItem(updatedItem)
+    await updateDoc(docRef, updatedItem)
     setNewData({title: '', highlight: false})
   }
   const onCancleEdit = () => {
@@ -34,10 +34,10 @@ const Leaf = ({thisLeaf}) => {
     setNewData({title: '', highlight: false})
   }
 
-  // deletes entire Trees (Projects)
+  // deletes entire Item (list items / tasks)
   const onDelete = async(e) => {
     e.stopPropagation();
-    const docRef = doc(db, "Leaves", thisLeaf.id)
+    const docRef = doc(db, "Items", thisItem.id)
     await deleteDoc(docRef)
   }
 
@@ -60,7 +60,7 @@ const Leaf = ({thisLeaf}) => {
           >
           <ListItemText sx={{ maxWidth: '90%'}}>
             <div style={{ overflow: "hidden", textOverflow: 'ellipsis' }} onClick={onEditButtonClick}>
-              {thisLeaf.text}
+              {thisItem.text}
             </div>
           </ListItemText>
           </ListItem>
@@ -69,7 +69,7 @@ const Leaf = ({thisLeaf}) => {
       (<>
         <TextField 
           id="outlined-basic" 
-          label={currentLeaf.text} 
+          label={currentItem.text} 
           variant="outlined" 
           type='text' 
           onChange={onConentChange}
@@ -86,4 +86,4 @@ const Leaf = ({thisLeaf}) => {
   )
 }
 
-export default Leaf
+export default Item

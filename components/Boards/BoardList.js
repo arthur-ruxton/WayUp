@@ -5,27 +5,27 @@ import { Grid } from '@mui/material';
 import { collection, where, query, orderBy, onSnapshot } from '@firebase/firestore';
 import { db } from '../../firebase/firebase';
 
-import TreeCard from './TreeCard'
+import BoardCard from './BoardCard'
 
-const TreesList = ({treeListProps}) => {
+const BoardList = ({boardListProps}) => {
 
   const [session] = useSession()
   const email = session.user.email
 
-  // get and set list of trees
-  const [treesList, setTreesList] = useState([])
+  // get and set list of boards
+  const [boardList, setBoardList] = useState([])
 
   useEffect(() => {
-    setTreesList(JSON.parse(treeListProps))
+    setBoardList(JSON.parse(boardListProps))
   }, [])
 
   useEffect(() => {
-    const collectionRef = collection(db, "Trees")
+    const collectionRef = collection(db, "Boards")
 
     const q = query(collectionRef, where("email", "==", email), orderBy("timestamp", "desc"))
 
     const snap = onSnapshot(q, (querySnapshot) => {
-      setTreesList(querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })))
+      setBoardList(querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, timestamp: doc.data().timestamp?.toDate().getTime() })))
     });
     return snap
   }, [])
@@ -33,13 +33,13 @@ const TreesList = ({treeListProps}) => {
   return (
     <>
       <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-        {treesList.map(tree => (
-         <Grid item key={tree.id}>
-            <TreeCard
-            id={tree.id} 
-            favourite={tree.favourite} 
-            timestamp={tree.timestamp} 
-            text={tree.text}
+        {boardList.map(board => (
+         <Grid item key={board.id}>
+            <BoardCard
+            id={board.id} 
+            favourite={board.favourite} 
+            timestamp={board.timestamp} 
+            text={board.text}
             />
          </Grid>
         ))}
@@ -48,4 +48,4 @@ const TreesList = ({treeListProps}) => {
   )
 }
 
-export default TreesList
+export default BoardList

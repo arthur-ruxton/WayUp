@@ -5,13 +5,12 @@ import { Card, CardContent, Typography, CardActions, IconButton, TextField } fro
 import { CheckIcon, CloseIcon, DeleteIcon, AddIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
 import { DataContext } from '../../pages/DataContext'
-import LeafList from '../Leaves/LeafList'
-// import LeafForm from '../Leaves/LeafForm'
-import NewDataForm from '../../components/NewDataForm'
+import ItemList from '../Items/ItemList'
+import NewDataForm from '../NewDataForm'
 
-const BranchCard = ({thisBranch, leafList}) => {
+const SingleCard = ({thisCard, itemList}) => {
   const [editing, setEditing] = useState()
-  const [currentBranch, setCurrentBranch] = useState(thisBranch)
+  const [currentCard, setCurrentCard] = useState(thisCard)
   const [showForm, setShowForm] = useState(false)
 
   const { newData, setNewData } = useContext(DataContext)
@@ -20,19 +19,19 @@ const BranchCard = ({thisBranch, leafList}) => {
     setShowForm(true)
   }
 
-   // functionality for editing the trees title.
+   // functionality for editing the boards title.
    const onEditButtonClick = () => {
     setEditing(true)
   }
   const onTitleChange = (e) => {
-    setNewData({...currentBranch, text: e.target.value})
+    setNewData({...currentCard, text: e.target.value})
   }
   const onSaveButtonClick = async() => {
     setEditing(false)
-    const docRef = doc(db, "Branches", currentBranch.id)
-    const updatedBranch = {...newData}
-    setCurrentBranch(updatedBranch)
-    await updateDoc(docRef, updatedBranch)
+    const docRef = doc(db, "Cards", currentCard.id)
+    const updatedCard = {...newData}
+    setCurrentCard(updatedCard)
+    await updateDoc(docRef, updatedCard)
     setNewData({text: '', highlight: false})
   }
   const onCancleEdit = () => {
@@ -40,17 +39,17 @@ const BranchCard = ({thisBranch, leafList}) => {
     setNewData({text: '', highlight: false})
   }
 
-   // deletes entire Trees (Projects)
+   // deletes entire board (Projects)
    const onDelete = async(e) => {
     e.stopPropagation();
-    const docRef = doc(db, "Branches", thisBranch.id)
+    const docRef = doc(db, "Cards", thisCard.id)
     await deleteDoc(docRef)
 
-    const deleteLeaf = async(leaf) => {
-      const docRef = doc(db, "Leaves", leaf.id)
+    const deleteitem = async(item) => {
+      const docRef = doc(db, "Items", item.id)
       await deleteDoc(docRef)
     }
-    await leafList.forEach(leaf => deleteLeaf(leaf)) 
+    await itemList.forEach(item => deleteitem(item)) 
   }
 
   return (
@@ -63,12 +62,12 @@ const BranchCard = ({thisBranch, leafList}) => {
         {
           !editing ?
           <Typography onClick={onEditButtonClick}>
-            {currentBranch.text}
+            {currentCard.text}
           </Typography> :
           (<>
             <TextField 
               id="outlined-basic" 
-              label={currentBranch.text} 
+              label={currentCard.text} 
               variant="outlined" 
               type='text' 
               onChange={onTitleChange}
@@ -81,15 +80,15 @@ const BranchCard = ({thisBranch, leafList}) => {
             </IconButton>
             </>)
         }
-        <LeafList leafList={leafList} branchId={currentBranch.id} treeId={currentBranch.treeId}/>
+        <ItemList itemList={itemList} cardId={currentCard.id} boardId={currentCard.boardId}/>
         {
           showForm ? 
           <NewDataForm 
             setShowForm={setShowForm} 
-            branchId={currentBranch.id}
-            treeId={currentBranch.treeId}
-            dataCollection="Leaves" 
-            type="leaf" 
+            cardId={currentCard.id}
+            boardId={currentCard.boardId}
+            dataCollection="Items" 
+            type="item" 
             maxLength={250}
           />
           :
@@ -113,4 +112,4 @@ const BranchCard = ({thisBranch, leafList}) => {
   )
 }
 
-export default BranchCard
+export default SingleCard
