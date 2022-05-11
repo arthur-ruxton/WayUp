@@ -9,7 +9,7 @@ import { db } from '../../firebase/firebase'
 import { DataContext } from '../../pages/DataContext'
 import { CheckIcon, CloseIcon, StarIcon, StarOutlineIcon, HomeIcon } from '../../assets/icons'
 
-const TreeHeader = ({ currentTree, setCurrentTree }) => {
+const BoardHeader = ({ currentBoard, setCurrentBoard }) => {
   const [editing, setEditing] = useState(false)
 
   // use context because this object used on different pages
@@ -20,14 +20,14 @@ const TreeHeader = ({ currentTree, setCurrentTree }) => {
     setEditing(true)
   }
   const onTitleChange = (e) => {
-    setNewData({...currentTree, text: e.target.value})
+    setNewData({...currentBoard, text: e.target.value})
   }
   const onSaveButtonClick = async() => {
     setEditing(false)
-    const docRef = doc(db, "Trees", currentTree.id)
-    const updatedTree = { ...newData, timestamp: serverTimestamp()}
-    setCurrentTree(updatedTree)
-    await updateDoc(docRef, updatedTree)
+    const docRef = doc(db, "Boards", currentBoard.id)
+    const updatedBoard = { ...newData, timestamp: serverTimestamp()}
+    setCurrentBoard(updatedBoard)
+    await updateDoc(docRef, updatedBoard)
     setNewData({text: '', highlight: false})
   }
   const onCancleEdit = () => {
@@ -40,12 +40,12 @@ const TreeHeader = ({ currentTree, setCurrentTree }) => {
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '1rem' }} mt={3}>
         {!editing ?
         <Typography variant='h5' onClick={onEditButtonClick}>
-          {currentTree.text}  
+          {currentBoard.text}  
         </Typography> :
         (<>
           <TextField 
             id="outlined-basic" 
-            label={currentTree.text} 
+            label={currentBoard.text} 
             variant="outlined" 
             type='text' 
             onChange={onTitleChange}
@@ -58,7 +58,7 @@ const TreeHeader = ({ currentTree, setCurrentTree }) => {
           </IconButton>
           </>)
         }
-        {!currentTree.highlight ? 
+        {!currentBoard.highlight ? 
           <IconButton>
             <StarOutlineIcon/>
           </IconButton>
@@ -71,11 +71,11 @@ const TreeHeader = ({ currentTree, setCurrentTree }) => {
           <HomeIcon/>
         </IconButton>
         <Typography>
-          {moment(currentTree.timestamp).format("DD MMMM, YYYY ")}
+          {moment(currentBoard.timestamp).format("DD MMMM, YYYY ")}
         </Typography>
       </Box>
     </Container>
   )
 }
 
-export default TreeHeader
+export default BoardHeader

@@ -8,29 +8,29 @@ import { Card, CardContent, Typography, CardActions, IconButton } from '@mui/mat
 import { DeleteIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
 
-const TreeCard = ({id, favourite, timestamp, text}) => {
+const BoardCard = ({id, favourite, timestamp, text}) => {
 
-  // deletes entire Trees (Projects)
+  // deletes entire Board (Projects)
   const onDelete = async(e) => {
     e.stopPropagation();
-    const treeRef = doc(db, "Trees", id)
-    await deleteDoc(treeRef)
+    const boardRef = doc(db, "Boards", id)
+    await deleteDoc(boardRef)
 
-    // create lists of branches and leaves related to this tree 
-    const branchesRef = collection(db, "Branches")
-    const branchesQ = query(branchesRef, where("treeId", "==", id))
-    const branchesQuerySnapshot = await getDocs(branchesQ)
-    let branchList = []
-    branchesQuerySnapshot.forEach((doc) => {
-      branchList.push({ ...doc.data(), id: doc.id })
+    // create lists of cards and leaves related to this tree 
+    const cardsRef = collection(db, "Cards")
+    const cardsQ = query(cardsRef, where("boardId", "==", id))
+    const cardsQuerySnapshot = await getDocs(cardsQ)
+    let cardList = []
+    cardsQuerySnapshot.forEach((doc) => {
+      cardList.push({ ...doc.data(), id: doc.id })
     })
 
-    const leavesRef = collection(db, "Leaves")
-    const leavesQ = query(leavesRef, where("treeId", "==", id))
-    const leavesQuerySnapshot = await getDocs(leavesQ)
-    let leafList = []
-    leavesQuerySnapshot.forEach((doc) => {
-      leafList.push({ ...doc.data(), id: doc.id })
+    const itemsRef = collection(db, "Items")
+    const itemsQ = query(itemsRef, where("boardId", "==", id))
+    const itemsQuerySnapshot = await getDocs(itemsQ)
+    let itemList = []
+    itemsQuerySnapshot.forEach((doc) => {
+      itemList.push({ ...doc.data(), id: doc.id })
     })
 
     // from other collections, delete branches related to this tree
@@ -38,8 +38,8 @@ const TreeCard = ({id, favourite, timestamp, text}) => {
       const docRef = doc(db, collection, item.id)
       await deleteDoc(docRef)
     }
-    branchList.forEach(branch => deleteChild(branch, "Branches"))
-    leafList.forEach(leaf => deleteChild(leaf, "Leaves"))
+    cardList.forEach(card => deleteChild(card, "Cards"))
+    itemList.forEach(item => deleteChild(item, "Items"))
   }
 
   // route to individual Tree page
@@ -47,7 +47,7 @@ const TreeCard = ({id, favourite, timestamp, text}) => {
   // follows route to Tree page using id
   const onExpand = (e) => {
     e.stopPropagation();
-    router.push(`/trees/${id}`)
+    router.push(`/boards/${id}`)
   }
 
   return (
@@ -75,4 +75,4 @@ const TreeCard = ({id, favourite, timestamp, text}) => {
   )
 }
 
-export default TreeCard
+export default BoardCard

@@ -9,8 +9,8 @@ import { AddIcon, CloseIcon } from "../assets/icons" // mui icons from my file s
 
 const NewDataForm = ({
   setShowForm,
-  branchId,
-  treeId,
+  cardId,
+  boardId,
   dataCollection,
   type,
   maxLength
@@ -33,14 +33,14 @@ const NewDataForm = ({
 
     let docRef;
     switch (type) {
-      case "tree":
+      case "board":
         docRef = await addDoc(collectionRef, {...newData, email: email, timestamp: serverTimestamp()});
         break;
-      case "branch":
-        docRef = await addDoc(collectionRef, {...newData, treeId: treeId});
+      case "card":
+        docRef = await addDoc(collectionRef, {...newData, boardId: boardId});
         break;
-      case "leaf":
-        docRef = await addDoc(collectionRef, {...newData, branchId: branchId, treeId: treeId});
+      case "item":
+        docRef = await addDoc(collectionRef, {...newData, cardId: cardId, boardId: boardId});
         break;
     }
     setNewData({text: '', highlight: false})
