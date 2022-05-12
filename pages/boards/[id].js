@@ -26,7 +26,12 @@ const Contents = ({ boardProps, cardListProps, itemListProps }) => {
   return (
   <Container>
     <BoardHeader currentBoard={currentBoard} setCurrentBoard={setCurrentBoard} />
-    <CardList cardListProps={cardListProps} itemListProps={itemListProps} boardId={currentBoard.id}/>
+    <CardList 
+    boardProps={boardProps}
+    cardListProps={cardListProps} 
+    itemListProps={itemListProps} 
+    boardId={currentBoard.id}
+    />
     {
       showForm ? 
       <NewDataForm 
