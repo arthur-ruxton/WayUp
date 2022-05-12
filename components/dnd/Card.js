@@ -4,7 +4,7 @@ import { Container, Box } from '@mui/material';
 
 import ItemList from './ItemList'
 
-const ListContainer = ({card, itemMap, index}) => {
+const Card = ({card, itemMap, index}) => {
   
   const items = card.itemIds.map(itemId => itemMap[itemId])
 
@@ -43,4 +43,4 @@ const ListContainer = ({card, itemMap, index}) => {
     )
   }
 
-export default React.memo(ListContainer)
+export default React.memo(Card)
