@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }) {
   return (
 
   <Provider session={pageProps.session}>
-    <UserBar />
+    {/* <UserBar /> */}
     <DataContext.Provider value={{ newData, setNewData }}>
       <Component {...pageProps} />
     </DataContext.Provider>
