@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 import { getSession } from 'next-auth/client'
 
 import { db } from '../../firebase/firebase'
-// import DragDropContainer from '../../components/dnd/DragDropContainer'
+import DragDropContainer from '../../components/dnd/DragDropContainer'
 // import { initialBoardData } from '../../initial-data'
 import BoardHeader from '../../components/Boards/BoardHeader'
 
@@ -19,7 +19,7 @@ export default function Home({boardProps, cardListProps, itemListProps}) {
   return (
     <Container  sx={{display:'flex', flexDirection:"column",  maxWidth:"full"}}>
       <BoardHeader currentBoard={currentBoard} setCurrentBoard={setCurrentBoard} />
-      {/* <DragDropContainer /> */}
+      <DragDropContainer cardListProps={cardListProps}/>
     </Container>
   )
 }
