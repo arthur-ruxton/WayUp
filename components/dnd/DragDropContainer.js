@@ -4,7 +4,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd-next'
 import Container from '@mui/material/Container';
 
 import { initialItemData, initialCardData, initialBoardData } from '../../initial-data'
-import ListContainer from './ListContainer';
+import Card from './Card';
 
 import React from 'react'
 
@@ -120,7 +120,7 @@ const DragDropContainer = () => {
                 boardData.cardsOrder.map((cardId, index) => {
                   const card = cardData.cards[cardId]
                   return (
-                    <ListContainer
+                    <Card
                       key={card.id} 
                       card={card} 
                       itemMap={itemData.items} 
