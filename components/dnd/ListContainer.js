@@ -19,8 +19,8 @@ const ListContainer = ({card, itemMap, index}) => {
             type="item-list"
             maxWidth="xs"
             sx={{margin: 3, padding: 0, border:1, borderRadius: 3, backgroundColor: 'white'}}>
-            <h3>{card.title}</h3>
-
+            <h3>{card.text}</h3>
+            
             <Droppable droppableId={card.id}>
               {(provided, snapshot) => {
                 return (

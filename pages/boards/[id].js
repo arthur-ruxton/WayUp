@@ -126,6 +126,7 @@ export default function Home() {
               {...provided.droppableProps}
               sx={{display:'flex',  maxWidth:"full"}}
               >
+                <h1>{boardData.text}</h1>
               {
                 // data.cardsOrder.map((cardId, index) => {
                 boardData.cardsOrder.map((cardId, index) => {

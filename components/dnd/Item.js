@@ -6,7 +6,7 @@ import { ListItem, ListItemText } from '@mui/material';
 
 const Item = ({item, index}) => {
 
-  const isDragDisabled = item.id === 'item-1';
+  const isDragDisabled = item.img !== '';
 
   return (
     <Draggable 
@@ -23,7 +23,7 @@ const Item = ({item, index}) => {
         className={`drag-item ${snapshot.isDragging?'drag-active':''} ${isDragDisabled?'drag-disabled':''}`}
         sx={{marginBottom: 1, color: 'GrayText', borderRadius: 1, backgroundColor:"white", boxShadow: 3}}
         >
-          <ListItemText primary={item.content} />
+          <ListItemText primary={item.text} />
           {/* - disabled items have no drag handle icon - */}
           { !isDragDisabled ? 
             <div {...provided.dragHandleProps}>
