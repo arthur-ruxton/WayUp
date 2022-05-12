@@ -41,9 +41,9 @@ const DragDropContainer = () => {
     // ----------> reorder the itemIds 
 
       // 1. retrive start collumn from state 
-      const startCard = cardData[source.droppableId]
+      const startCard = cardData.cards[source.droppableId]
       // 2. retrive destination collumn from state 
-      const finishCard = cardData[destination.droppableId]
+      const finishCard = cardData.cards[destination.droppableId]
 
     // case 1. reodering items within a cards
     if(startCard === finishCard){
@@ -62,7 +62,7 @@ const DragDropContainer = () => {
       const newData = {
         ...cardData,
         cards: {
-          ...cardData, 
+          ...cardData.cards, 
           [newCard.id]: newCard
         }
       }
@@ -91,7 +91,7 @@ const DragDropContainer = () => {
       const newData = {
         ...cardData,
         cards: {
-          ...cardData, 
+          ...cardData.cards, 
           [newStartCard.id]: newStartCard,
           [newFinishCard.id]: newFinishCard
         }
@@ -118,13 +118,12 @@ const DragDropContainer = () => {
               >
               {
                 boardData.cardsOrder.map((cardId, index) => {
-                  const card = cardData[cardId]
-                  console.log('card', card)
+                  const card = cardData.cards[cardId]
                   return (
                     <Card
                       key={card.id} 
                       card={card} 
-                      itemMap={itemData} 
+                      itemMap={itemData.items} 
                       index={index}
                     />
                   )

@@ -1,35 +1,38 @@
 const initialItemData = {
-  "5K0y14nmiQTCdc9ZpKgg": {
-    id: "5K0y14nmiQTCdc9ZpKgg", 
-    boardId: "IWXYTvyrZrXXL8Gr5kZp",
-    highlight: false,
-    text: "cook dinner",
-    img: "",
-  },
-  "DN2thDni4amMNoCiT35h": {
-    id: "DN2thDni4amMNoCiT35h", 
-    boardId: "IWXYTvyrZrXXL8Gr5kZp",
-    highlight: false,
-    text: "watch quality tutorials",
-    img: "",
-  },
-  "ZAw4GXAnJ4xmBzK67dfi": {
-    id: "ZAw4GXAnJ4xmBzK67dfi", 
-    boardId: "IWXYTvyrZrXXL8Gr5kZp",
-    highlight: false,
-    text: "Charge my phone",
-    img: "",
-  },
-  "x9rFHXYKt3Pq3gUcyXmY": {
-    id: "x9rFHXYKt3Pq3gUcyXmY", 
-    boardId: "IWXYTvyrZrXXL8Gr5kZp",
-    highlight: false,
-    text: "This item has an image, so dragging is disabled",
-    img: "this item has an image attached",
-  },
+  items: {
+    "5K0y14nmiQTCdc9ZpKgg": {
+      id: "5K0y14nmiQTCdc9ZpKgg", 
+      boardId: "IWXYTvyrZrXXL8Gr5kZp",
+      highlight: false,
+      text: "cook dinner",
+      img: "",
+    },
+    "DN2thDni4amMNoCiT35h": {
+      id: "DN2thDni4amMNoCiT35h", 
+      boardId: "IWXYTvyrZrXXL8Gr5kZp",
+      highlight: false,
+      text: "watch quality tutorials",
+      img: "",
+    },
+    "ZAw4GXAnJ4xmBzK67dfi": {
+      id: "ZAw4GXAnJ4xmBzK67dfi", 
+      boardId: "IWXYTvyrZrXXL8Gr5kZp",
+      highlight: false,
+      text: "Charge my phone",
+      img: "",
+    },
+    "x9rFHXYKt3Pq3gUcyXmY": {
+      id: "x9rFHXYKt3Pq3gUcyXmY", 
+      boardId: "IWXYTvyrZrXXL8Gr5kZp",
+      highlight: false,
+      text: "This item has an image, so dragging is disabled",
+      img: "this item has an image attached",
+    },
+  }
 }
 
 const initialCardData = {
+  cards: {
     "TeeMymkptKtbpYckxluW": {
       id: "TeeMymkptKtbpYckxluW",
       boardId: "IWXYTvyrZrXXL8Gr5kZp",
@@ -51,6 +54,7 @@ const initialCardData = {
       text: "complete",
       itemIds: []
     },
+  }
 }
 
 const initialBoardData = {
@@ -65,7 +69,6 @@ const initialBoardData = {
 export { initialItemData }
 export { initialCardData }
 export { initialBoardData }
-
 
 
 
