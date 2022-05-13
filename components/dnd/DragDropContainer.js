@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd-next'
 
 import Container from '@mui/material/Container';
@@ -8,10 +8,18 @@ import Card from './Card';
 
 import React from 'react'
 
-const DragDropContainer = () => {
+const DragDropContainer = ({cardListProps}) => {
   const [itemData, setItemData] = useState(initialItemData)
   const [cardData, setCardData] = useState(initialCardData)
   const [boardData, setBoardData] = useState(initialBoardData)
+
+  // const [realCardData, setRealCardData] = useState([])
+
+  // useEffect(() => {
+  //   setRealCardData(JSON.parse(cardListProps))
+  // }, [])
+
+  // console.log(realCardData)
 
   // function for persisting data when reordering
   const onDragEnd = (result) => {
@@ -41,9 +49,9 @@ const DragDropContainer = () => {
     // ----------> reorder the itemIds 
 
       // 1. retrive start collumn from state 
-      const startCard = cardData.cards[source.droppableId]
+      const startCard = cardData.filter(card => card.id === source.droppableId)[0]
       // 2. retrive destination collumn from state 
-      const finishCard = cardData.cards[destination.droppableId]
+      const finishCard = cardData.filter(card => card.id === destination.droppableId)[0]
 
     // case 1. reodering items within a cards
     if(startCard === finishCard){
@@ -58,14 +66,8 @@ const DragDropContainer = () => {
         ...startCard,
         itemIds: newItemIds
       }
-        // replace old cards with new cards 
-      const newData = {
-        ...cardData,
-        cards: {
-          ...cardData.cards, 
-          [newCard.id]: newCard
-        }
-      }
+      const newData = [...cardData]
+      newData.splice(startCard.index, 1, newCard)
         setCardData(newData)
         return;
     }
@@ -87,15 +89,9 @@ const DragDropContainer = () => {
       ...finishCard,
       itemIds: newFinishCardItemIds
     }
-      // replace old cardss with new cardss
-      const newData = {
-        ...cardData,
-        cards: {
-          ...cardData.cards, 
-          [newStartCard.id]: newStartCard,
-          [newFinishCard.id]: newFinishCard
-        }
-      }
+      const newData = [...cardData]
+      newData.splice(startCard.index, 1, newStartCard)
+      newData.splice(finishCard.index, 1, newFinishCard)
       setCardData(newData)
         return;
   }
@@ -118,12 +114,12 @@ const DragDropContainer = () => {
               >
               {
                 boardData.cardsOrder.map((cardId, index) => {
-                  const card = cardData.cards[cardId]
+                  const card = cardData.filter(card => card.id === cardId)[0]
                   return (
                     <Card
                       key={card.id} 
                       card={card} 
-                      itemMap={itemData.items} 
+                      itemMap={itemData}
                       index={index}
                     />
                   )
