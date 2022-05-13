@@ -51,7 +51,7 @@ export const getServerSideProps = async (context) => {
   cardsQuerySnapshot.forEach((doc) => {
     cardList.push({ ...doc.data(), id: doc.id })
   })
-  //console.log('card list', cardList)
+  // console.log('card list', cardList)
 
   const itemsRef = collection(db, "Items")
   const itemsQ = query(itemsRef, where("boardId", "==", id))
@@ -62,12 +62,13 @@ export const getServerSideProps = async (context) => {
   })
   // console.log('item list server side', itemList)
 
+
   return {
     props: { 
       session,
       boardProps: JSON.stringify({ ...docSnap.data(), id: docSnap.id, timestamp: docSnap.data().timestamp?.toDate().getTime() }) || null,
-      cardListProps: JSON.stringify(cardList) || [],
-      itemListProps: JSON.stringify(itemList) || [],
+      cardListProps: cardList || [],
+      itemListProps: itemList || [],
     },
   }
 }

@@ -8,18 +8,10 @@ import Card from './Card';
 
 import React from 'react'
 
-const DragDropContainer = ({cardListProps}) => {
-  const [itemData, setItemData] = useState(initialItemData)
-  const [cardData, setCardData] = useState(initialCardData)
-  const [boardData, setBoardData] = useState(initialBoardData)
-
-  // const [realCardData, setRealCardData] = useState([])
-
-  // useEffect(() => {
-  //   setRealCardData(JSON.parse(cardListProps))
-  // }, [])
-
-  // console.log(realCardData)
+const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
+  const [boardData, setBoardData] = useState(JSON.parse(boardProps))
+  const [cardData, setCardData] = useState(cardListProps)
+  const [itemData, setItemData] = useState(itemListProps)
 
   // function for persisting data when reordering
   const onDragEnd = (result) => {
