@@ -19,7 +19,7 @@ export default function Home({boardProps, cardListProps, itemListProps}) {
   return (
     <Container  sx={{display:'flex', flexDirection:"column",  maxWidth:"full"}}>
       <BoardHeader currentBoard={currentBoard} setCurrentBoard={setCurrentBoard} />
-      <DragDropContainer cardListProps={cardListProps}/>
+      <DragDropContainer boardProps={boardProps} cardListProps={cardListProps} itemListProps={itemListProps}/>
     </Container>
   )
 }
@@ -53,7 +53,7 @@ export const getServerSideProps = async (context) => {
   })
   //console.log('card list', cardList)
 
-  const itemsRef = collection(db, "items")
+  const itemsRef = collection(db, "Items")
   const itemsQ = query(itemsRef, where("boardId", "==", id))
   const itemsQuerySnapshot = await getDocs(itemsQ)
   let itemList = []
