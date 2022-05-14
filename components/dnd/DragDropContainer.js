@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd-next'
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 
 import Container from '@mui/material/Container';
+
+import { db } from '../../firebase/firebase'
 
 import { initialItemData, initialCardData, initialBoardData } from '../../initial-data'
 import Card from './Card';
@@ -35,9 +38,17 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
       newCardsOrder.splice(destination.index, 0, draggableId)
       const updatedData = {
         ...boardData,
-        cardsOrder: newCardsOrder
+        cardsOrder: newCardsOrder,
+        timestamp: serverTimestamp()
       }
-      setBoardData(updatedData)
+      
+      const updateBoardData = async () => {
+        const docRef = doc(db, "Boards", boardData.id)
+      // const updatedDataWithTimestamp = { ...updatedData, timestamp: serverTimestamp()}
+        setBoardData(updatedData)
+        await updateDoc(docRef, updatedData)
+      }
+      updateBoardData()
       return
     }
     
@@ -63,11 +74,17 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
       }
 
       const newData = [...cardData]
+      // get index of card, splice to replace it with updated card 
       const index = newData.indexOf(startCard)
-      // newData.splice(startCard.index, 1, newCard)
       newData.splice(index, 1, newCard)
+
+      const updateCardData = async () => {
+        const docRef = doc(db, "Cards", startCard.id)
         setCardData(newData)
-        return;
+        await updateDoc(docRef, newCard)
+      }
+      updateCardData()
+      return;
     }
 
     // case 2. handle moving items between cards
@@ -95,7 +112,16 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
       // newData.splice(finishCard.index, 1, newFinishCard)
       newData.splice(startIndex, 1, newStartCard)
       newData.splice(finishIndex, 1, newFinishCard)
-      setCardData(newData)
+      // setCardData(newData)
+
+      const updateCardData = async () => {
+        const startCardDocRef = doc(db, "Cards", startCard.id)
+        const finishCardDocRef = doc(db, "Cards", finishCard.id)
+        setCardData(newData)
+        await updateDoc(startCardDocRef, newStartCard)
+        await updateDoc(finishCardDocRef, newFinishCard)
+      }
+      updateCardData()
         return;
   }
 
