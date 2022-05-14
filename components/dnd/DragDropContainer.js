@@ -112,7 +112,16 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
       // newData.splice(finishCard.index, 1, newFinishCard)
       newData.splice(startIndex, 1, newStartCard)
       newData.splice(finishIndex, 1, newFinishCard)
-      setCardData(newData)
+      // setCardData(newData)
+
+      const updateCardData = async () => {
+        const startCardDocRef = doc(db, "Cards", startCard.id)
+        const finishCardDocRef = doc(db, "Cards", finishCard.id)
+        setCardData(newData)
+        await updateDoc(startCardDocRef, newStartCard)
+        await updateDoc(finishCardDocRef, newFinishCard)
+      }
+      updateCardData()
         return;
   }
 
