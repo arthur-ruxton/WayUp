@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd-next'
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 
 import Container from '@mui/material/Container';
+
+import { db } from '../../firebase/firebase'
 
 import { initialItemData, initialCardData, initialBoardData } from '../../initial-data'
 import Card from './Card';
@@ -35,9 +38,17 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
       newCardsOrder.splice(destination.index, 0, draggableId)
       const updatedData = {
         ...boardData,
-        cardsOrder: newCardsOrder
+        cardsOrder: newCardsOrder,
+        timestamp: serverTimestamp()
       }
-      setBoardData(updatedData)
+      
+      const updateBoardData = async () => {
+        const docRef = doc(db, "Boards", boardData.id)
+      // const updatedDataWithTimestamp = { ...updatedData, timestamp: serverTimestamp()}
+        setBoardData(updatedData)
+        await updateDoc(docRef, updatedData)
+      }
+      updateBoardData()
       return
     }
     
