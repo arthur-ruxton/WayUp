@@ -19,7 +19,7 @@ export default function Home({boardProps, cardListProps, itemListProps}) {
   return (
     <Container  sx={{display:'flex', flexDirection:"column",  maxWidth:"full"}}>
       <BoardHeader currentBoard={currentBoard} setCurrentBoard={setCurrentBoard} />
-      <DragDropContainer cardListProps={cardListProps}/>
+      <DragDropContainer boardProps={boardProps} cardListProps={cardListProps} itemListProps={itemListProps}/>
     </Container>
   )
 }
@@ -51,9 +51,9 @@ export const getServerSideProps = async (context) => {
   cardsQuerySnapshot.forEach((doc) => {
     cardList.push({ ...doc.data(), id: doc.id })
   })
-  //console.log('card list', cardList)
+  // console.log('card list', cardList)
 
-  const itemsRef = collection(db, "items")
+  const itemsRef = collection(db, "Items")
   const itemsQ = query(itemsRef, where("boardId", "==", id))
   const itemsQuerySnapshot = await getDocs(itemsQ)
   let itemList = []
@@ -62,12 +62,13 @@ export const getServerSideProps = async (context) => {
   })
   // console.log('item list server side', itemList)
 
+
   return {
     props: { 
       session,
       boardProps: JSON.stringify({ ...docSnap.data(), id: docSnap.id, timestamp: docSnap.data().timestamp?.toDate().getTime() }) || null,
-      cardListProps: JSON.stringify(cardList) || [],
-      itemListProps: JSON.stringify(itemList) || [],
+      cardListProps: cardList || [],
+      itemListProps: itemList || [],
     },
   }
 }

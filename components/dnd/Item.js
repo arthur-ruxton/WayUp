@@ -6,7 +6,7 @@ import { ListItem, ListItemText } from '@mui/material';
 
 const Item = ({item, index}) => {
 
-  const isDragDisabled = item.img !== '';
+  const isDragDisabled = item.text === 'disable this item';
 
   return (
     <Draggable 

@@ -6,7 +6,7 @@ import ItemList from './ItemList'
 
 const Card = ({card, itemMap, index}) => {
   
-  const items = card.itemIds.map(itemId => itemMap[itemId])
+  const items = card.itemIds.map(itemId => itemMap.filter(item => item.id === itemId)[0])
 
   return (
     <Draggable draggableId={card.id} index={index}>
