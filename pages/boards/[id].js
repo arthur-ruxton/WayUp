@@ -67,8 +67,8 @@ export const getServerSideProps = async (context) => {
     props: { 
       session,
       boardProps: JSON.stringify({ ...docSnap.data(), id: docSnap.id, timestamp: docSnap.data().timestamp?.toDate().getTime() }) || null,
-      cardListProps: cardList || [],
-      itemListProps: itemList || [],
+      cardListProps: JSON.stringify(cardList) || [],
+      itemListProps: JSON.stringify(itemList) || [],
     },
   }
 }

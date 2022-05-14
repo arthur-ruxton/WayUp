@@ -9,9 +9,12 @@ import Card from './Card';
 import React from 'react'
 
 const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
-  const [boardData, setBoardData] = useState(JSON.parse(boardProps))
-  const [cardData, setCardData] = useState(cardListProps)
-  const [itemData, setItemData] = useState(itemListProps)
+  // const [boardData, setBoardData] = useState(JSON.parse(boardProps))
+  // const [cardData, setCardData] = useState(cardListProps)
+  // const [itemData, setItemData] = useState(itemListProps)
+  const [boardData, setBoardData] = useState(initialBoardData)
+  const [cardData, setCardData] = useState(initialCardData)
+  const [itemData, setItemData] = useState(initialItemData)
 
   // function for persisting data when reordering
   const onDragEnd = (result) => {
@@ -58,8 +61,11 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
         ...startCard,
         itemIds: newItemIds
       }
+
       const newData = [...cardData]
-      newData.splice(startCard.index, 1, newCard)
+      const index = newData.indexOf(startCard)
+      // newData.splice(startCard.index, 1, newCard)
+      newData.splice(index, 1, newCard)
         setCardData(newData)
         return;
     }
@@ -82,8 +88,13 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
       itemIds: newFinishCardItemIds
     }
       const newData = [...cardData]
-      newData.splice(startCard.index, 1, newStartCard)
-      newData.splice(finishCard.index, 1, newFinishCard)
+      const startIndex = newData.indexOf(startCard)
+      const finishIndex = newData.indexOf(finishCard)
+      console.log('finish card index', finishIndex)
+      // newData.splice(startCard.index, 1, newStartCard)
+      // newData.splice(finishCard.index, 1, newFinishCard)
+      newData.splice(startIndex, 1, newStartCard)
+      newData.splice(finishIndex, 1, newFinishCard)
       setCardData(newData)
         return;
   }
