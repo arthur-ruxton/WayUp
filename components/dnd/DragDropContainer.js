@@ -74,11 +74,17 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
       }
 
       const newData = [...cardData]
+      // get index of card, splice to replace it with updated card 
       const index = newData.indexOf(startCard)
-      // newData.splice(startCard.index, 1, newCard)
       newData.splice(index, 1, newCard)
+
+      const updateCardData = async () => {
+        const docRef = doc(db, "Cards", startCard.id)
         setCardData(newData)
-        return;
+        await updateDoc(docRef, newCard)
+      }
+      updateCardData()
+      return;
     }
 
     // case 2. handle moving items between cards
