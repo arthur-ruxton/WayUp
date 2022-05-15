@@ -163,7 +163,7 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps, currentBoa
             <Container 
               ref={provided.innerRef} 
               {...provided.droppableProps}
-              sx={{display:'flex',  maxWidth:"full"}}
+              sx={{display:'flex',  maxWidth:"full", overflowX: 'scroll'}}
               >
               {
                 boardData.cardsOrder.map((cardId, index) => {
