@@ -30,10 +30,9 @@ const SingleCard = ({card, itemMap, index}) => {
             titleTypographyProps={{variant:'h6' }}
             title={card.text} 
             action={
-              <DragHandleIcon 
-              {...provided.dragHandleProps}
-              sx={{ fontSize: "2rem", color: "#808080"}}
-              />
+              <div {...provided.dragHandleProps}>
+                <DragHandleIcon sx={{ fontSize: "2rem", color: "#808080"}} className="drag-handle"/>
+              </div>
             }
             />
             <Droppable droppableId={card.id}>

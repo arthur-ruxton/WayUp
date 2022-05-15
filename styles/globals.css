@@ -16,6 +16,12 @@ a {
 }
 
 /* custom draggable styles */
+.drag-handle{
+  border-radius: 100%;
+}
+.drag-handle:hover{
+  background-color: #dcdcdc;
+}
 
 .drag-item:hover{
   background-color: #f2eeee;
