@@ -15,7 +15,11 @@ a {
   box-sizing: border-box;
 }
 
-/* custom dragging styles */
+/* custom draggable styles */
+
+.drag-item:hover{
+  background-color: #f2eeee;
+}
 
 .drop-active{
   /* background-color: rgb(252, 183, 183); */
@@ -27,6 +31,7 @@ a {
   color: rgb(34, 92, 55);
   border: 1px solid rgb(34, 92, 55);
   rotate: 1deg;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
 

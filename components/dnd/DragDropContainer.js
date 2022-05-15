@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd-next'
 import { 
   getDocs,
-  getDoc,
   doc, 
   updateDoc, 
   serverTimestamp, 
@@ -11,10 +10,10 @@ import {
   query
 } from 'firebase/firestore'
 
-import Container from '@mui/material/Container';
+import { Box } from '@mui/material';
 
 import { db } from '../../firebase/firebase'
-import Card from './Card';
+import SingleCard from './SingleCard';
 
 const DragDropContainer = ({boardProps, cardListProps, itemListProps, currentBoard}) => {
   const [boardData, setBoardData] = useState(JSON.parse(boardProps))
@@ -160,16 +159,17 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps, currentBoa
       >
         {(provided) => {
           return (
-            <Container 
+            <Box
               ref={provided.innerRef} 
               {...provided.droppableProps}
-              sx={{display:'flex',  maxWidth:"full", overflowX: 'scroll'}}
+              sx={{display:'flex', maxWidth:"full", overflowX: 'scroll'}}
+              padding={3}
               >
               {
                 boardData.cardsOrder.map((cardId, index) => {
                   const card = cardData.filter(card => card.id === cardId)[0]
                   return (
-                    <Card
+                    <SingleCard
                       key={card.id} 
                       card={card} 
                       itemMap={itemData}
@@ -179,7 +179,7 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps, currentBoa
                 })
               }
               {provided.placeholder}
-            </Container>
+            </Box>
           )
         }
       }

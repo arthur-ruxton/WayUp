@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import StarIcon from '@mui/icons-material/Star';
 import HomeIcon from '@mui/icons-material/Home';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
 
 export { AddIcon }
 export { DeleteIcon }
@@ -17,3 +18,4 @@ export { CloseIcon }
 export { StarIcon }
 export { StarOutlineIcon }
 export { HomeIcon }
+export { DragHandleIcon }

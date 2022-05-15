@@ -40,7 +40,7 @@ export default function Home({boardProps, cardListProps, itemListProps}) {
   }, [refresh])
 
   return (
-    <Container  sx={{display:'flex', flexDirection:"column",  maxWidth:"full"}}>
+    <div className="board-page">
       <BoardHeader currentBoard={currentBoard} setCurrentBoard={setCurrentBoard} />
       <DragDropContainer 
       boardProps={boardProps} 
@@ -73,7 +73,7 @@ export default function Home({boardProps, cardListProps, itemListProps}) {
         </IconButton>
       }
       </Box>
-    </Container>
+    </div>
   )
 }
 

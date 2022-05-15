@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd-next';
-import { Container, Box } from '@mui/material';
+import { Box, Card, CardHeader, IconButton } from '@mui/material';
 
+import { DragHandleIcon } from '../../assets/icons'
 import ItemList from './ItemList'
 
-const Card = ({card, itemMap, index}) => {
+const SingleCard = ({card, itemMap, index}) => {
   
   const items = card.itemIds.map(itemId => itemMap.filter(item => item.id === itemId)[0])
 
@@ -12,10 +13,9 @@ const Card = ({card, itemMap, index}) => {
     <Draggable draggableId={card.id} index={index}>
       {(provided) => {
         return (
-          <Container 
+          <Card 
             ref={provided.innerRef}
             {...provided.draggableProps}
-            {...provided.dragHandleProps}
             type="item-list"
             sx={{margin: 1,
              minWidth: 275, 
@@ -26,8 +26,16 @@ const Card = ({card, itemMap, index}) => {
              backgroundColor: 'white', 
              boxShadow: 3}}
           >
-            <h3>{card.text}</h3>
-            
+            <CardHeader
+            titleTypographyProps={{variant:'h6' }}
+            title={card.text} 
+            action={
+              <DragHandleIcon 
+              {...provided.dragHandleProps}
+              sx={{ fontSize: "2rem", color: "#808080"}}
+              />
+            }
+            />
             <Droppable droppableId={card.id}>
               {(provided, snapshot) => {
                 return (
@@ -35,7 +43,7 @@ const Card = ({card, itemMap, index}) => {
                     ref={provided.innerRef} 
                     {...provided.droppableProps}
                     className={`drop-item ${snapshot.isDraggingOver?'drop-active':''}`}
-                    sx={{flexGrow: 1, marginBottom: 3, padding: 3, borderRadius: 3}}
+                    sx={{flexGrow: 1, marginBottom: 3, margin: 1, padding: 1, borderRadius: 3}}
                   >
                     <ItemList items={items} />
                     {provided.placeholder}
@@ -43,11 +51,11 @@ const Card = ({card, itemMap, index}) => {
                 )
               }}
             </Droppable>
-          </Container>
+          </Card>
         )
       }}
     </Draggable>
     )
   }
 
-export default React.memo(Card)
+export default React.memo(SingleCard)

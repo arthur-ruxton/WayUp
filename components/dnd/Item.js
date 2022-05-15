@@ -1,7 +1,6 @@
 import React, { useState} from 'react'
 import { Draggable } from 'react-beautiful-dnd-next';
 
-import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { ListItem, ListItemText } from '@mui/material';
 
 const Item = ({item, index}) => {
@@ -17,20 +16,22 @@ const Item = ({item, index}) => {
       {(provided, snapshot) => {
         return (
           <ListItem 
-        ref={provided.innerRef}
-        {...provided.draggableProps}
-      /*-- use is dragging property from snapshot to add class and style during drag --*/
-        className={`drag-item ${snapshot.isDragging?'drag-active':''} ${isDragDisabled?'drag-disabled':''}`}
-        sx={{marginBottom: 1, color: 'GrayText', borderRadius: 1, backgroundColor:"white", boxShadow: 3}}
-        >
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          /*-- use is dragging property from snapshot to add class and style during drag --*/
+            className={`${snapshot.isDragging?'drag-active':''} ${isDragDisabled?'drag-disabled':'drag-item'}`}
+            sx={{
+              width: "full",
+              marginBottom: 1,
+              color: "GrayText", 
+              border: 1, 
+              borderColor: "gray", 
+              borderRadius: 1, 
+              backgroundColor:"white"
+            }}
+          >
           <ListItemText primary={item.text} />
-          {/* - disabled items have no drag handle icon - */}
-          { !isDragDisabled ? 
-            <div {...provided.dragHandleProps}>
-              <DragHandleIcon />
-            </div>:
-            <></>
-          }
         </ListItem>
         )
       }}
