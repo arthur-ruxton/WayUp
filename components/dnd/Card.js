@@ -17,8 +17,15 @@ const Card = ({card, itemMap, index}) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             type="item-list"
-            maxWidth="xs"
-            sx={{margin: 3, padding: 0, border:1, borderRadius: 3, backgroundColor: 'white'}}>
+            sx={{margin: 1,
+             minWidth: 275, 
+             padding: 0, 
+             border:1, 
+             borderColor: "gray",
+             borderRadius: 3, 
+             backgroundColor: 'white', 
+             boxShadow: 3}}
+          >
             <h3>{card.text}</h3>
             
             <Droppable droppableId={card.id}>
