@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useSession } from 'next-auth/client'
-import { collection, addDoc, serverTimestamp} from '@firebase/firestore' // firebase methods 
+import { collection, doc, addDoc, updateDoc, serverTimestamp} from '@firebase/firestore' // firebase methods 
 import { TextField, Button } from "@mui/material" // mui components
 
 import { db } from '../firebase/firebase'
@@ -8,9 +8,11 @@ import { DataContext } from '../pages/DataContext' // reusable new data object
 import { AddIcon, CloseIcon } from "../assets/icons" // mui icons from my file system
 
 const NewDataForm = ({
+  refresh,
+  setRefresh,
   setShowForm,
-  cardId,
-  boardId,
+  currentBoard,
+  // boardId,
   dataCollection,
   type,
   maxLength
@@ -28,22 +30,40 @@ const NewDataForm = ({
 
   // firebase crud methods -> here we add data (addDoc) to the db
   const onSubmit = async () => {
+
     setShowForm(false)
     const collectionRef = collection(db, dataCollection)
 
     let docRef;
     switch (type) {
       case "board":
-        docRef = await addDoc(collectionRef, {...newData, email: email, timestamp: serverTimestamp()});
+        docRef = await addDoc(collectionRef, {...newData, cardsOrder: [], email: email, timestamp: serverTimestamp()});
         break;
       case "card":
-        docRef = await addDoc(collectionRef, {...newData, boardId: boardId});
+        // create a unique id
+        // const newId = `${currentBoard.cardsOrder.length + 1}`
+        // add the new card
+        docRef = await addDoc(collectionRef, {...newData, itemIds: [], boardId: currentBoard.id});
+        // create new cardsOrder array with newId added
+        const newCardsOrder = [...currentBoard.cardsOrder, docRef.id]
+        // create new board with updated cardsOrder
+        const updatedBoard = {
+          ...currentBoard,
+          cardsOrder: newCardsOrder,
+          timestamp: serverTimestamp()
+        }
+        // reference current board in db
+        const boardRef = doc(db, "Boards", currentBoard.id)
+        // update current board in db with new cardsOrder
+        await updateDoc(boardRef, updatedBoard)
+        // cause board page to refresh
         break;
       case "item":
-        docRef = await addDoc(collectionRef, {...newData, cardId: cardId, boardId: boardId});
+        docRef = await addDoc(collectionRef, {...newData, boardId: currentBoard.id});
         break;
     }
     setNewData({text: '', highlight: false})
+    setRefresh(true)
   }
 
   // simply abort the crud opx

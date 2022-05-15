@@ -14,7 +14,7 @@ import NewDataForm from '../../components/NewDataForm'
 const Contents = ({ boardProps, cardListProps, itemListProps }) => {
   const [currentBoard, setCurrentBoard] = useState({})
   const [showForm, setShowForm] = useState(false)
-
+  
   const showNewForm = () => {
     setShowForm(true)
   }

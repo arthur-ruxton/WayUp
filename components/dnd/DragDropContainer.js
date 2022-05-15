@@ -1,23 +1,47 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd-next'
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
+import { 
+  getDocs,
+  getDoc,
+  doc, 
+  updateDoc, 
+  serverTimestamp, 
+  collection, 
+  where, 
+  query
+} from 'firebase/firestore'
 
 import Container from '@mui/material/Container';
 
 import { db } from '../../firebase/firebase'
-
-import { initialItemData, initialCardData, initialBoardData } from '../../initial-data'
 import Card from './Card';
 
-import React from 'react'
-
-const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
+const DragDropContainer = ({boardProps, cardListProps, itemListProps, currentBoard}) => {
   const [boardData, setBoardData] = useState(JSON.parse(boardProps))
   const [cardData, setCardData] = useState(cardListProps)
   const [itemData, setItemData] = useState(itemListProps)
-  // const [boardData, setBoardData] = useState(initialBoardData)
-  // const [cardData, setCardData] = useState(initialCardData)
-  // const [itemData, setItemData] = useState(initialItemData)
+
+  useEffect(() => {
+    if(currentBoard.id){
+      const updateCardData = async () => {
+        const cardsCollectionRef = collection(db, "Cards")
+        const q = query(cardsCollectionRef, where("boardId", "==", boardData.id))
+        const snapshot = await getDocs(q)
+        let cardList = []
+        snapshot.forEach((doc) => {
+          cardList.push({ ...doc.data(), id: doc.id })
+        })
+        setCardData(cardList)
+      }
+      const updateBoardData = async () => {
+        await updateCardData()
+        setBoardData(currentBoard)
+      }
+      updateBoardData()
+    }
+  }, [currentBoard]) 
+
+  console.log('card data length', cardData.length)
 
   // function for persisting data when reordering
   const onDragEnd = (result) => {
