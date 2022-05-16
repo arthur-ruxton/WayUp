@@ -5,18 +5,17 @@ import { TextField, Button } from "@mui/material" // mui components
 
 import { db } from '../firebase/firebase'
 import { DataContext } from '../pages/DataContext' // reusable new data object 
+import { BoardContext } from '../pages/boards/BoardContext'
 import { AddIcon, CloseIcon } from "../assets/icons" // mui icons from my file system
 
 const NewDataForm = ({
-  refresh,
-  setRefresh,
   setShowForm,
-  currentBoard,
-  // boardId,
   dataCollection,
   type,
   maxLength
 }) => {
+
+  const { currentBoard, setRefresh } = useContext(BoardContext)
 
   const [session] = useSession() // next-auth cookies method
   const email = session.user.email 

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd-next'
 import { 
   getDocs,
-  getDoc,
   doc, 
   updateDoc, 
   serverTimestamp, 
@@ -11,15 +10,18 @@ import {
   query
 } from 'firebase/firestore'
 
-import Container from '@mui/material/Container';
+import { Box } from '@mui/material';
 
 import { db } from '../../firebase/firebase'
-import Card from './Card';
+import { BoardContext } from '../../pages/boards/BoardContext'
+import SingleCard from './SingleCard';
 
-const DragDropContainer = ({boardProps, cardListProps, itemListProps, currentBoard}) => {
+const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
   const [boardData, setBoardData] = useState(JSON.parse(boardProps))
   const [cardData, setCardData] = useState(cardListProps)
   const [itemData, setItemData] = useState(itemListProps)
+
+  const { currentBoard } = useContext(BoardContext)
 
   useEffect(() => {
     if(currentBoard.id){
@@ -65,10 +67,8 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps, currentBoa
         cardsOrder: newCardsOrder,
         timestamp: serverTimestamp()
       }
-      
       const updateBoardData = async () => {
         const docRef = doc(db, "Boards", boardData.id)
-      // const updatedDataWithTimestamp = { ...updatedData, timestamp: serverTimestamp()}
         setBoardData(updatedData)
         await updateDoc(docRef, updatedData)
       }
@@ -160,16 +160,17 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps, currentBoa
       >
         {(provided) => {
           return (
-            <Container 
+            <Box
               ref={provided.innerRef} 
               {...provided.droppableProps}
-              sx={{display:'flex',  maxWidth:"full", overflowX: 'scroll'}}
+              sx={{display:'flex', maxWidth:"full", overflowX: 'scroll'}}
+              padding={3}
               >
               {
                 boardData.cardsOrder.map((cardId, index) => {
                   const card = cardData.filter(card => card.id === cardId)[0]
                   return (
-                    <Card
+                    <SingleCard
                       key={card.id} 
                       card={card} 
                       itemMap={itemData}
@@ -179,7 +180,7 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps, currentBoa
                 })
               }
               {provided.placeholder}
-            </Container>
+            </Box>
           )
         }
       }

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { getDocs, getDoc, doc, collection, query, where } from 'firebase/firestore'
-import { Container, Box, IconButton } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
 
 import { getSession } from 'next-auth/client'
 
 // file system imports 
+import { BoardContext } from './BoardContext'
 import { AddIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
 import DragDropContainer from '../../components/dnd/DragDropContainer'
@@ -20,8 +21,7 @@ export default function Home({boardProps, cardListProps, itemListProps}) {
   const showNewForm = () => {
     setShowForm(true)
   }
-
-  // currently undable to force refresh when adding new form. 
+ 
   useEffect(() => {
     if(refresh === 'page load'){
       setCurrentBoard(JSON.parse(boardProps))
@@ -40,40 +40,35 @@ export default function Home({boardProps, cardListProps, itemListProps}) {
   }, [refresh])
 
   return (
-    <Container  sx={{display:'flex', flexDirection:"column",  maxWidth:"full"}}>
-      <BoardHeader currentBoard={currentBoard} setCurrentBoard={setCurrentBoard} />
-      <DragDropContainer 
-      boardProps={boardProps} 
-      cardListProps={cardListProps} 
-      itemListProps={itemListProps}
-      currentBoard={currentBoard}
-      // refresh={refresh}
-      // setRefresh={setRefresh}
-      />
-      <Box>
-      {
-        showForm ? 
-        <NewDataForm
-          refresh={refresh}
-          setRefresh={setRefresh}
-          setShowForm={setShowForm} 
-          currentBoard={currentBoard}
-          // boardId={currentBoard.id}
-          dataCollection="Cards" 
-          type="card" 
-          maxLength={26}
+    <BoardContext.Provider value={{currentBoard, setCurrentBoard, refresh, setRefresh}}>
+      <div className="board-page">
+        <BoardHeader />
+        <DragDropContainer 
+        boardProps={boardProps} 
+        cardListProps={cardListProps} 
+        itemListProps={itemListProps}
         />
-        :
-        <IconButton 
-          variant="contained" 
-          sx={{ mt: 3 }}
-          onClick={showNewForm}
-        >
-          <AddIcon />
-        </IconButton>
-      }
-      </Box>
-    </Container>
+        <Box>
+        {
+          showForm ? 
+          <NewDataForm
+            setShowForm={setShowForm} 
+            dataCollection="Cards" 
+            type="card" 
+            maxLength={26}
+          />
+          :
+          <IconButton 
+            variant="contained" 
+            sx={{ mt: 3 }}
+            onClick={showNewForm}
+          >
+            <AddIcon />
+          </IconButton>
+        }
+        </Box>
+      </div>
+    </BoardContext.Provider>
   )
 }
 

@@ -7,13 +7,17 @@ import moment from 'moment'
 // imports from project files including icons
 import { db } from '../../firebase/firebase'
 import { DataContext } from '../../pages/DataContext'
+import { BoardContext } from '../../pages/boards/BoardContext'
 import { CheckIcon, CloseIcon, StarIcon, StarOutlineIcon, HomeIcon } from '../../assets/icons'
 
-const BoardHeader = ({ currentBoard, setCurrentBoard }) => {
+
+const BoardHeader = () => {
   const [editing, setEditing] = useState(false)
 
   // use context because this object used on different pages
   const { newData, setNewData } = useContext(DataContext)
+
+  const { currentBoard } = useContext(BoardContext)
 
   // functionality for editing the trees title.
   const onEditButtonClick = () => {
@@ -36,10 +40,10 @@ const BoardHeader = ({ currentBoard, setCurrentBoard }) => {
   }
 
   return (
-    <Container>
+    <Box sx={{margin: 0, bgcolor: 'lightGreen'}}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '1rem' }} mt={3}>
         {!editing ?
-        <Typography variant='h5' onClick={onEditButtonClick}>
+        <Typography variant='h5' onClick={onEditButtonClick} m={3}>
           {currentBoard.text}  
         </Typography> :
         (<>
@@ -74,7 +78,7 @@ const BoardHeader = ({ currentBoard, setCurrentBoard }) => {
           {moment(currentBoard.timestamp).format("DD MMMM, YYYY ")}
         </Typography>
       </Box>
-    </Container>
+    </Box>
   )
 }
 

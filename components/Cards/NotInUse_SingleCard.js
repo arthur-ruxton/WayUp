@@ -39,7 +39,7 @@ const SingleCard = ({thisCard, itemList}) => {
     setNewData({text: '', highlight: false})
   }
 
-   // deletes entire board (Projects)
+   // deletes entire card 
    const onDelete = async(e) => {
     e.stopPropagation();
     const docRef = doc(db, "Cards", thisCard.id)
