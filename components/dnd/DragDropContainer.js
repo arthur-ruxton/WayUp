@@ -43,8 +43,6 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
     }
   }, [currentBoard]) 
 
-  console.log('card data length', cardData.length)
-
   // function for persisting data when reordering
   const onDragEnd = (result) => {
     const { destination, source, draggableId, type } = result
@@ -131,12 +129,8 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
       const newData = [...cardData]
       const startIndex = newData.indexOf(startCard)
       const finishIndex = newData.indexOf(finishCard)
-      console.log('finish card index', finishIndex)
-      // newData.splice(startCard.index, 1, newStartCard)
-      // newData.splice(finishCard.index, 1, newFinishCard)
       newData.splice(startIndex, 1, newStartCard)
       newData.splice(finishIndex, 1, newFinishCard)
-      // setCardData(newData)
 
       const updateCardData = async () => {
         const startCardDocRef = doc(db, "Cards", startCard.id)
