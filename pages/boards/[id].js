@@ -9,7 +9,6 @@ import { BoardContext } from './BoardContext'
 import { AddIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
 import DragDropContainer from '../../components/dnd/DragDropContainer'
-// import { initialBoardData } from '../../initial-data'
 import BoardHeader from '../../components/Boards/BoardHeader'
 import NewDataForm from '../../components/NewDataForm'
 
@@ -98,7 +97,6 @@ export const getServerSideProps = async (context) => {
   cardsQuerySnapshot.forEach((doc) => {
     cardList.push({ ...doc.data(), id: doc.id })
   })
-  // console.log('card list', cardList)
 
   const itemsRef = collection(db, "Items")
   const itemsQ = query(itemsRef, where("boardId", "==", id))
@@ -107,8 +105,6 @@ export const getServerSideProps = async (context) => {
   itemsQuerySnapshot.forEach((doc) => {
     itemList.push({ ...doc.data(), id: doc.id })
   })
-  // console.log('item list server side', itemList)
-
 
   return {
     props: { 

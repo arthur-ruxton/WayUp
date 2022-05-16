@@ -82,7 +82,6 @@ export default Contents
     cardsQuerySnapshot.forEach((doc) => {
       cardList.push({ ...doc.data(), id: doc.id })
     })
-    //console.log('card list', cardList)
 
     const itemsRef = collection(db, "items")
     //const itemsQ = query(itemsRef, where("treeId", "==", id))
@@ -91,7 +90,6 @@ export default Contents
     itemsQuerySnapshot.forEach((doc) => {
       itemList.push({ ...doc.data(), id: doc.id })
     })
-    // console.log('item list server side', itemList)
   
     return {
       props: { 

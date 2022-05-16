@@ -1,18 +1,43 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd-next';
 import { doc, deleteDoc, updateDoc, serverTimestamp } from '@firebase/firestore'
-import { Box, Card, CardHeader, IconButton, CardActions } from '@mui/material';
+import { Box, Card, CardHeader, Typography, TextField, IconButton, CardActions } from '@mui/material';
 
 import { db } from '../../firebase/firebase'
-import { DragHandleIcon, DeleteIcon } from '../../assets/icons'
+import { CheckIcon, CloseIcon, DragHandleIcon, DeleteIcon } from '../../assets/icons'
 import { BoardContext } from '../../pages/boards/BoardContext'
+import { DataContext } from '../../pages/DataContext'
 import ItemList from './ItemList'
 
 const SingleCard = ({card, itemMap, index}) => {
-
   const { currentBoard, setRefresh } = useContext(BoardContext)
+  const { newData, setNewData } = useContext(DataContext)
+  const [currentCard, setCurrentCard] = useState(card)
+  const [editing, setEditing] = useState(false)
   
   const items = card.itemIds.map(itemId => itemMap.filter(item => item.id === itemId)[0])
+
+   // functionality for editing the boards title.
+   const onEditButtonClick = () => {
+    setEditing(true)
+  }
+  const onTitleChange = (e) => {
+    // setNewData({...currentCard, text: e.target.value})
+    setNewData({...card, text: e.target.value})
+  }
+  const onSaveButtonClick = async() => {
+    const docRef = doc(db, "Cards", card.id)
+    const updatedCard = {...newData}
+    setCurrentCard(updatedCard) 
+    setEditing(false)
+    await updateDoc(docRef, updatedCard)
+    setNewData({text: '', highlight: false})
+  }
+
+  const onCancleEdit = () => {
+    setEditing(false)
+    setNewData({text: '', highlight: false})
+  }
 
     // deletes entire card (Projects)
     const onDelete = async(e) => {
@@ -63,7 +88,28 @@ const SingleCard = ({card, itemMap, index}) => {
              backgroundColor: 'white', 
              boxShadow: 3}}
           >
-            <CardHeader
+            {
+              !editing ?
+              <Typography onClick={onEditButtonClick}>
+                {currentCard.text}
+              </Typography> :
+              (<>
+                <TextField 
+                  id="outlined-basic" 
+                  label={currentCard.text} 
+                  variant="outlined" 
+                  type='text' 
+                  onChange={onTitleChange}
+                />
+                <IconButton onClick={onSaveButtonClick}>
+                  <CheckIcon/>
+                </IconButton>
+                <IconButton onClick={onCancleEdit}>
+                  <CloseIcon/>
+                </IconButton>
+                </>)
+            }
+            {/* <CardHeader
             titleTypographyProps={{variant:'h6' }}
             title={card.text} 
             action={
@@ -71,7 +117,7 @@ const SingleCard = ({card, itemMap, index}) => {
                 <DragHandleIcon sx={{ fontSize: "2rem", color: "#808080"}} className="drag-handle"/>
               </div>
             }
-            />
+            /> */}
             <Droppable droppableId={card.id}>
               {(provided, snapshot) => {
                 return (
@@ -91,6 +137,9 @@ const SingleCard = ({card, itemMap, index}) => {
               <IconButton  onClick={e => onDelete(e)}>
                 <DeleteIcon/>
               </IconButton>
+              <div {...provided.dragHandleProps}>
+                <DragHandleIcon sx={{ fontSize: "2rem", color: "#808080"}} className="drag-handle"/>
+              </div>
             </CardActions>
           </Card>
         )
