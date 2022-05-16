@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd-next'
 import { 
   getDocs,
@@ -13,12 +13,15 @@ import {
 import { Box } from '@mui/material';
 
 import { db } from '../../firebase/firebase'
+import { BoardContext } from '../../pages/boards/BoardContext'
 import SingleCard from './SingleCard';
 
-const DragDropContainer = ({boardProps, cardListProps, itemListProps, currentBoard}) => {
+const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
   const [boardData, setBoardData] = useState(JSON.parse(boardProps))
   const [cardData, setCardData] = useState(cardListProps)
   const [itemData, setItemData] = useState(itemListProps)
+
+  const { currentBoard } = useContext(BoardContext)
 
   useEffect(() => {
     if(currentBoard.id){
@@ -64,10 +67,8 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps, currentBoa
         cardsOrder: newCardsOrder,
         timestamp: serverTimestamp()
       }
-      
       const updateBoardData = async () => {
         const docRef = doc(db, "Boards", boardData.id)
-      // const updatedDataWithTimestamp = { ...updatedData, timestamp: serverTimestamp()}
         setBoardData(updatedData)
         await updateDoc(docRef, updatedData)
       }
