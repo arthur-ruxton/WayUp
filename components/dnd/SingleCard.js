@@ -1,13 +1,50 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd-next';
-import { Box, Card, CardHeader, IconButton } from '@mui/material';
+import { doc, deleteDoc, updateDoc, serverTimestamp } from '@firebase/firestore'
+import { Box, Card, CardHeader, IconButton, CardActions } from '@mui/material';
 
-import { DragHandleIcon } from '../../assets/icons'
+import { db } from '../../firebase/firebase'
+import { DragHandleIcon, DeleteIcon } from '../../assets/icons'
+import { BoardContext } from '../../pages/boards/BoardContext'
 import ItemList from './ItemList'
 
 const SingleCard = ({card, itemMap, index}) => {
+
+  const { currentBoard, setRefresh } = useContext(BoardContext)
   
   const items = card.itemIds.map(itemId => itemMap.filter(item => item.id === itemId)[0])
+
+    // deletes entire card (Projects)
+    const onDelete = async(e) => {
+      e.stopPropagation();
+      // strat by deleting the card id from the boards data
+      const newCardsOrder = Array.from(currentBoard.cardsOrder)
+      const cardIndex = newCardsOrder.indexOf(card)
+      newCardsOrder.splice(cardIndex, 1)
+      const updatedData = {
+        ...currentBoard,
+        cardsOrder: newCardsOrder,
+        timestamp: serverTimestamp()
+      }
+      const updateBoardData = async () => {
+        const docRef = doc(db, "Boards", currentBoard.id)
+        // setBoardData(updatedData)
+        await updateDoc(docRef, updatedData)
+      }
+      updateBoardData()
+
+      // delete the card itself
+      const docRef = doc(db, "Cards", card.id)
+      await deleteDoc(docRef)
+      
+      // delete all items belonging to that card
+      const deleteitem = async(item) => {
+        const docRef = doc(db, "Items", item.id)
+        await deleteDoc(docRef)
+      }
+      await items.forEach(item => deleteitem(item)) 
+      setRefresh(true)
+    }
 
   return (
     <Draggable draggableId={card.id} index={index}>
@@ -50,6 +87,11 @@ const SingleCard = ({card, itemMap, index}) => {
                 )
               }}
             </Droppable>
+            <CardActions>
+              <IconButton  onClick={e => onDelete(e)}>
+                <DeleteIcon/>
+              </IconButton>
+            </CardActions>
           </Card>
         )
       }}
