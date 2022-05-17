@@ -20,11 +20,30 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
   const [boardData, setBoardData] = useState(JSON.parse(boardProps))
   const [cardData, setCardData] = useState(cardListProps)
   const [itemData, setItemData] = useState(itemListProps)
+  const [refreshCard, setRefreshCard] = useState(false)
 
   const { currentBoard } = useContext(BoardContext)
 
   useEffect(() => {
-    if(currentBoard.id){
+    if(refreshCard === "refresh card"){
+      // get the new item data first so that when itemId is added to the card ->
+      // the item can be found in the item data.
+      const updateItemData = async () => {
+        const itemCollectionRef = collection(db, "Items")
+        const q = query(itemCollectionRef, where("boardId", "==", boardData.id))
+        const snapshot = await getDocs(q)
+        let itemList = []
+        snapshot.forEach((doc) => {
+          itemList.push({ ...doc.data(), id: doc.id })
+        })
+        setItemData(itemList)
+      }
+      updateItemData()
+    }
+    // if a card is added, current board will refresh add the card id to the baord data ->
+    // then this will be triggered and the card will be added.
+    // if an item is added, it will be added to state and then this will be triggered updating the card
+    if(currentBoard.id || refreshCard === "refresh card"){
       const updateCardData = async () => {
         const cardsCollectionRef = collection(db, "Cards")
         const q = query(cardsCollectionRef, where("boardId", "==", boardData.id))
@@ -40,8 +59,12 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
         setBoardData(currentBoard)
       }
       updateBoardData()
+      // use this if statement to avoid setting the state unnecesarily
+      if(refreshCard === "refresh card"){
+        setRefreshCard(false)
+      }
     }
-  }, [currentBoard]) 
+  }, [currentBoard, refreshCard]) 
 
   // function for persisting data when reordering
   const onDragEnd = (result) => {
@@ -169,6 +192,7 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
                       card={card} 
                       itemMap={itemData}
                       index={index}
+                      setRefreshCard={setRefreshCard}
                     />
                   )
                 })

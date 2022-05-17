@@ -9,9 +9,12 @@ import { BoardContext } from '../pages/boards/BoardContext'
 import { AddIcon, CloseIcon } from "../assets/icons" // mui icons from my file system
 
 const NewDataForm = ({
-  currentBoard, 
-  setRefresh,
   setShowForm,
+  setRefreshBoard,
+  setRefreshCard,
+  currentCard,
+  boardId,
+  currentBoard, 
   dataCollection,
   type,
   maxLength
@@ -56,10 +59,24 @@ const NewDataForm = ({
         // update current board in db with new cardsOrder
         await updateDoc(boardRef, updatedBoard)
         // cause board page to refresh
-        setRefresh("refresh board")
+        setRefreshBoard("refresh board")
         break;
       case "item":
-        docRef = await addDoc(collectionRef, {...newData, boardId: currentBoard.id});
+        // add new item 
+        docRef = await addDoc(collectionRef, {...newData, boardId: boardId});
+         // create new itemIds array with newId added
+         const newItemIds = [...currentCard.itemIds, docRef.id]
+         // create new card with updated itemIds
+         const updatedCard = {
+           ...currentCard,
+           itemIds: newItemIds
+         }
+         // reference current Card in db
+         const cardRef = doc(db, "Cards", currentCard.id)
+         // update current card in db with new itemIds
+         await updateDoc(cardRef, updatedCard)
+         // cause card to refresh
+        setRefreshCard("refresh card")
         break;
     }
     setNewData({text: '', highlight: false})

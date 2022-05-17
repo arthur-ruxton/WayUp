@@ -52,7 +52,7 @@ export default function Home({boardProps, cardListProps, itemListProps}) {
           showForm ? 
           <NewDataForm
             currentBoard={currentBoard}
-            setRefresh={setRefreshBoard}
+            setRefreshBoard={setRefreshBoard}
             setShowForm={setShowForm} 
             dataCollection="Cards" 
             type="card" 
