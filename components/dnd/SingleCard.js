@@ -25,6 +25,9 @@ const SingleCard = ({card, itemMap, index, setRefreshCard}) => {
   // I will try to refresh from the parent component 'dndcontainer' instead.
   const items = card.itemIds.map(itemId => itemMap.filter(item => item.id === itemId)[0])
 
+  // this lists for update to 'card' and stores any update in state.
+  // this ensures itemIds array is up to date -> without doing so, 
+  // adding a new item will replace an existing item. IMPORTANT
   useEffect(() => {
     if(card !== currentCard)
     setCurrentCard(card)
