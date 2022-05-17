@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd-next';
 import { doc, deleteDoc, updateDoc, serverTimestamp } from '@firebase/firestore'
 import { Box, Card, CardContent, Typography, TextField, IconButton, CardActions } from '@mui/material';
@@ -9,6 +9,7 @@ import { BoardContext } from '../../pages/boards/BoardContext'
 import { DataContext } from '../../pages/DataContext'
 import ItemList from './ItemList'
 import NewDataForm from '../NewDataForm'
+import { CurrencyYenTwoTone } from '@mui/icons-material';
 
 
 const SingleCard = ({card, itemMap, index, setRefreshCard}) => {
@@ -23,6 +24,15 @@ const SingleCard = ({card, itemMap, index, setRefreshCard}) => {
   // I believe this has to stay constant for some reason --> 
   // I will try to refresh from the parent component 'dndcontainer' instead.
   const items = card.itemIds.map(itemId => itemMap.filter(item => item.id === itemId)[0])
+
+  useEffect(() => {
+    if(card !== currentCard)
+    setCurrentCard(card)
+  }, [card])
+
+  if(currentCard.text === "in progress"){
+    console.log('currentCard', currentCard)
+  }
 
   const showNewForm = () => {
     setShowForm(true)
