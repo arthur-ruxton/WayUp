@@ -10,7 +10,7 @@ import { DataContext } from '../../pages/DataContext'
 import ItemList from './ItemList'
 
 const SingleCard = ({card, itemMap, index}) => {
-  const { currentBoard, setRefresh } = useContext(BoardContext)
+  const { currentBoard, setRefreshBoard } = useContext(BoardContext)
   const { newData, setNewData } = useContext(DataContext)
   const [currentCard, setCurrentCard] = useState(card)
   const [editing, setEditing] = useState(false)
@@ -68,7 +68,7 @@ const SingleCard = ({card, itemMap, index}) => {
         await deleteDoc(docRef)
       }
       await items.forEach(item => deleteitem(item)) 
-      setRefresh(true)
+      setRefreshBoard("refresh board")
     }
 
   return (

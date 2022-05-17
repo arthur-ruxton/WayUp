@@ -56,7 +56,7 @@ const NewDataForm = ({
         // update current board in db with new cardsOrder
         await updateDoc(boardRef, updatedBoard)
         // cause board page to refresh
-        setRefresh(true)
+        setRefresh("refresh board")
         break;
       case "item":
         docRef = await addDoc(collectionRef, {...newData, boardId: currentBoard.id});
