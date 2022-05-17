@@ -15,19 +15,19 @@ import NewDataForm from '../../components/NewDataForm'
 export default function Home({boardProps, cardListProps, itemListProps}) {
   const [currentBoard, setCurrentBoard] = useState({})
   const [showForm, setShowForm] = useState(false)
-  const [refresh, setRefresh] = useState('page load')
+  const [refreshBoard, setRefreshBoard] = useState("page load")
 
   const showNewForm = () => {
     setShowForm(true)
   }
  
   useEffect(() => {
-    if(refresh === 'page load'){
+    if(refreshBoard === "page load"){
       setCurrentBoard(JSON.parse(boardProps))
     }
-    if(refresh === true){
+    if(refreshBoard === "refresh board"){
       const updateBoardData = async () => {
-        const boardDocRef = doc(db, 'Boards', currentBoard.id)
+        const boardDocRef = doc(db, "Boards", currentBoard.id)
         const docSnap = await getDoc(boardDocRef)
         const updatedBoardProps = 
         JSON.stringify({ ...docSnap.data(), id: docSnap.id, timestamp: docSnap.data().timestamp?.toDate().getTime() }) || null
@@ -35,11 +35,11 @@ export default function Home({boardProps, cardListProps, itemListProps}) {
       }
       updateBoardData()
     }
-    setRefresh(false)
-  }, [refresh])
+    setRefreshBoard(false)
+  }, [refreshBoard])
 
   return (
-    <BoardContext.Provider value={{currentBoard, setCurrentBoard, refresh, setRefresh}}>
+    <BoardContext.Provider value={{currentBoard, setCurrentBoard, setRefreshBoard}}>
       <div className="board-page">
         <BoardHeader />
         <DragDropContainer 
@@ -52,7 +52,7 @@ export default function Home({boardProps, cardListProps, itemListProps}) {
           showForm ? 
           <NewDataForm
             currentBoard={currentBoard}
-            setRefresh={setRefresh}
+            setRefreshBoard={setRefreshBoard}
             setShowForm={setShowForm} 
             dataCollection="Cards" 
             type="card" 

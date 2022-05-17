@@ -1,22 +1,45 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd-next';
 import { doc, deleteDoc, updateDoc, serverTimestamp } from '@firebase/firestore'
-import { Box, Card, CardHeader, Typography, TextField, IconButton, CardActions } from '@mui/material';
+import { Box, Card, CardContent, Typography, TextField, IconButton, CardActions } from '@mui/material';
 
 import { db } from '../../firebase/firebase'
-import { CheckIcon, CloseIcon, DragHandleIcon, DeleteIcon } from '../../assets/icons'
+import { CheckIcon, CloseIcon, DragHandleIcon, DeleteIcon, AddIcon } from '../../assets/icons'
 import { BoardContext } from '../../pages/boards/BoardContext'
 import { DataContext } from '../../pages/DataContext'
 import ItemList from './ItemList'
+import NewDataForm from '../NewDataForm'
+import { CurrencyYenTwoTone } from '@mui/icons-material';
 
-const SingleCard = ({card, itemMap, index}) => {
-  const { currentBoard, setRefresh } = useContext(BoardContext)
+
+const SingleCard = ({card, itemMap, index, setRefreshCard}) => {
+  const { currentBoard, setRefreshBoard } = useContext(BoardContext)
   const { newData, setNewData } = useContext(DataContext)
   const [currentCard, setCurrentCard] = useState(card)
   const [editing, setEditing] = useState(false)
-  
+  const [showForm, setShowForm] = useState(false)
+
+  // switching from card to currentCard caused an arror when moving items. -> useing state didnt work either.
+  // you must unravell this in order to add items.
+  // I believe this has to stay constant for some reason --> 
+  // I will try to refresh from the parent component 'dndcontainer' instead.
   const items = card.itemIds.map(itemId => itemMap.filter(item => item.id === itemId)[0])
 
+  // this lists for update to 'card' and stores any update in state.
+  // this ensures itemIds array is up to date -> without doing so, 
+  // adding a new item will replace an existing item. IMPORTANT
+  useEffect(() => {
+    if(card !== currentCard)
+    setCurrentCard(card)
+  }, [card])
+
+  if(currentCard.text === "in progress"){
+    console.log('currentCard', currentCard)
+  }
+
+  const showNewForm = () => {
+    setShowForm(true)
+  }
    // functionality for editing the boards title.
    const onEditButtonClick = () => {
     setEditing(true)
@@ -39,7 +62,7 @@ const SingleCard = ({card, itemMap, index}) => {
     setNewData({text: '', highlight: false})
   }
 
-    // deletes entire card (Projects)
+    // deletes entire card (Projects) including the cardId stored in board object
     const onDelete = async(e) => {
       e.stopPropagation();
       // strat by deleting the card id from the boards data
@@ -68,7 +91,7 @@ const SingleCard = ({card, itemMap, index}) => {
         await deleteDoc(docRef)
       }
       await items.forEach(item => deleteitem(item)) 
-      setRefresh(true)
+      setRefreshBoard("refresh board")
     }
 
   return (
@@ -88,51 +111,65 @@ const SingleCard = ({card, itemMap, index}) => {
              backgroundColor: 'white', 
              boxShadow: 3}}
           >
-            {
-              !editing ?
-              <Typography onClick={onEditButtonClick}>
-                {currentCard.text}
-              </Typography> :
-              (<>
-                <TextField 
-                  id="outlined-basic" 
-                  label={currentCard.text} 
-                  variant="outlined" 
-                  type='text' 
-                  onChange={onTitleChange}
+            <CardContent>
+              {
+                !editing ?
+                <Typography onClick={onEditButtonClick}>
+                  {currentCard.text}
+                </Typography> :
+                (<>
+                  <TextField 
+                    id="outlined-basic" 
+                    label={currentCard.text} 
+                    variant="outlined" 
+                    type='text' 
+                    onChange={onTitleChange}
+                  />
+                  <IconButton onClick={onSaveButtonClick}>
+                    <CheckIcon/>
+                  </IconButton>
+                  <IconButton onClick={onCancleEdit}>
+                    <CloseIcon/>
+                  </IconButton>
+                  </>)
+              }
+              <Droppable droppableId={card.id}>
+                {(provided, snapshot) => {
+                  return (
+                    <Box 
+                      ref={provided.innerRef} 
+                      {...provided.droppableProps}
+                      className={`drop-item ${snapshot.isDraggingOver?'drop-active':''}`}
+                      sx={{flexGrow: 1, marginBottom: 3, margin: 1, padding: 1, borderRadius: 3}}
+                    >
+                      <ItemList items={items} />
+                      {provided.placeholder}
+                    </Box>
+                  )
+                }}
+              </Droppable>
+              {
+                showForm ? 
+                <NewDataForm 
+                  setShowForm={setShowForm} 
+                  setRefreshCard={setRefreshCard}
+                  currentCard={currentCard}
+                  boardId={currentCard.boardId}
+                  dataCollection="Items" 
+                  type="item" 
+                  maxLength={250}
                 />
-                <IconButton onClick={onSaveButtonClick}>
-                  <CheckIcon/>
+                :
+                <IconButton 
+                  size="large"
+                  variant="outlined" 
+                  sx={{ mt: 3, alignItems: "center"}}
+                  onClick={showNewForm}
+                >
+                  <AddIcon />
                 </IconButton>
-                <IconButton onClick={onCancleEdit}>
-                  <CloseIcon/>
-                </IconButton>
-                </>)
-            }
-            {/* <CardHeader
-            titleTypographyProps={{variant:'h6' }}
-            title={card.text} 
-            action={
-              <div {...provided.dragHandleProps}>
-                <DragHandleIcon sx={{ fontSize: "2rem", color: "#808080"}} className="drag-handle"/>
-              </div>
-            }
-            /> */}
-            <Droppable droppableId={card.id}>
-              {(provided, snapshot) => {
-                return (
-                  <Box 
-                    ref={provided.innerRef} 
-                    {...provided.droppableProps}
-                    className={`drop-item ${snapshot.isDraggingOver?'drop-active':''}`}
-                    sx={{flexGrow: 1, marginBottom: 3, margin: 1, padding: 1, borderRadius: 3}}
-                  >
-                    <ItemList items={items} />
-                    {provided.placeholder}
-                  </Box>
-                )
-              }}
-            </Droppable>
+              }
+            </CardContent>
             <CardActions>
               <IconButton  onClick={e => onDelete(e)}>
                 <DeleteIcon/>
