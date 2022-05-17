@@ -9,13 +9,13 @@ import { BoardContext } from '../pages/boards/BoardContext'
 import { AddIcon, CloseIcon } from "../assets/icons" // mui icons from my file system
 
 const NewDataForm = ({
+  currentBoard, 
+  setRefresh,
   setShowForm,
   dataCollection,
   type,
   maxLength
 }) => {
-
-  const { currentBoard, setRefresh } = useContext(BoardContext)
 
   const [session] = useSession() // next-auth cookies method
   const email = session.user.email 
@@ -56,13 +56,13 @@ const NewDataForm = ({
         // update current board in db with new cardsOrder
         await updateDoc(boardRef, updatedBoard)
         // cause board page to refresh
+        setRefresh(true)
         break;
       case "item":
         docRef = await addDoc(collectionRef, {...newData, boardId: currentBoard.id});
         break;
     }
     setNewData({text: '', highlight: false})
-    setRefresh(true)
   }
 
   // simply abort the crud opx
