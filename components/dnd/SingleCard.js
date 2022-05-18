@@ -103,7 +103,7 @@ const SingleCard = ({card, itemMap, index, setRefreshCard}) => {
             {...provided.draggableProps}
             type="item-list"
             sx={{margin: 1,
-             minWidth: 275, 
+             minWidth: 350, 
              padding: 0, 
              border:1, 
              borderColor: "gray",
