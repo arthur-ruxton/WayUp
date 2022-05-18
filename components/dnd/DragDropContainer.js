@@ -12,6 +12,7 @@ import {
 
 import { Box } from '@mui/material';
 
+import { CardContext } from '../../pages/boards/CardContext'
 import { db } from '../../firebase/firebase'
 import { BoardContext } from '../../pages/boards/BoardContext'
 import SingleCard from './SingleCard';
@@ -167,43 +168,47 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd} >
-      {/*-- here we wrap everything in a droppable, allowing us to make cardss draggable --*/}
-      <Droppable 
-      droppableId="total-droppable" 
-      direction="horizontal" 
-      // draggables can only be dropped if start/finish droppable have same type! VERY USEFUL
-      type="card"
-      >
-        {(provided) => {
-          return (
-            <Box
-              ref={provided.innerRef} 
-              {...provided.droppableProps}
-              sx={{display:'flex', maxWidth:"full", overflowX: 'scroll'}}
-              padding={3}
-              >
-              {
-                boardData.cardsOrder.map((cardId, index) => {
-                  const card = cardData.filter(card => card.id === cardId)[0]
-                  return (
-                    <SingleCard
-                      key={card.id} 
-                      card={card} 
-                      itemMap={itemData}
-                      index={index}
-                      setRefreshCard={setRefreshCard}
-                    />
-                  )
-                })
-              }
-              {provided.placeholder}
-            </Box>
-          )
-        }
-      }
-      </Droppable>
-    </DragDropContext>
+    <CardContext.Provider value={{setRefreshCard}}>
+      <div className='total-cards-div'>
+        <DragDropContext onDragEnd={onDragEnd} >
+          {/*-- here we wrap everything in a droppable, allowing us to make cardss draggable --*/}
+          <Droppable 
+          droppableId="total-droppable" 
+          direction="horizontal" 
+          // draggables can only be dropped if start/finish droppable have same type! VERY USEFUL
+          type="card"
+          >
+            {(provided) => {
+              return (
+                <Box
+                  ref={provided.innerRef} 
+                  {...provided.droppableProps}
+                  sx={{display:'flex', maxWidth:"full", overflowX: 'scroll'}}
+                  padding={3}
+                  >
+                  {
+                    boardData.cardsOrder.map((cardId, index) => {
+                      const card = cardData.filter(card => card.id === cardId)[0]
+                      return (
+                        <SingleCard
+                          key={card.id} 
+                          card={card} 
+                          itemMap={itemData}
+                          index={index}
+                          setRefreshCard={setRefreshCard}
+                        />
+                      )
+                    })
+                  }
+                  {provided.placeholder}
+                </Box>
+              )
+            }
+          }
+          </Droppable>
+        </DragDropContext>
+      </div>
+    </CardContext.Provider>
   )
 }
 

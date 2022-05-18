@@ -15,6 +15,10 @@ a {
   box-sizing: border-box;
 }
 
+.total-cards-div {
+  overflow-x: scroll;
+}
+
 /* custom draggable styles */
 .drag-handle{
   border-radius: 100%;
@@ -22,16 +26,13 @@ a {
 .drag-handle:hover{
   background-color: #dcdcdc;
 }
-
 .drag-item:hover{
   background-color: #f2eeee;
 }
-
 .drop-active{
   /* background-color: rgb(252, 183, 183); */
   background-color: lightgray;
 }
-
 .drag-active {
   background-color: rgb(115, 231, 156);
   color: rgb(34, 92, 55);
@@ -39,8 +40,6 @@ a {
   rotate: 1deg;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
-
-
 .drag-disabled {
   background-color: rgb(231, 230, 230);
 }
