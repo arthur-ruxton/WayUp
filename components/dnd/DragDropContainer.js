@@ -167,6 +167,7 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
   }
 
   return (
+   <div className='total-cards-div'>
     <DragDropContext onDragEnd={onDragEnd} >
       {/*-- here we wrap everything in a droppable, allowing us to make cardss draggable --*/}
       <Droppable 
@@ -204,6 +205,7 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
       }
       </Droppable>
     </DragDropContext>
+   </div>
   )
 }
 
