@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CheckIcon from '@mui/icons-material/Check';
@@ -10,6 +11,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 
 export { AddIcon }
+export { EditIcon }
 export { DeleteIcon }
 export { MoreVertIcon }
 export { CheckIcon }
