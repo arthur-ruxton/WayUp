@@ -43,8 +43,3 @@ a {
 .drag-disabled {
   background-color: rgb(231, 230, 230);
 }
-
-.speeddial1{
-  position: relative;
-  left: 1rem;
-}
