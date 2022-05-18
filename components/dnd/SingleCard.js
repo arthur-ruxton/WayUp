@@ -9,8 +9,6 @@ import { BoardContext } from '../../pages/boards/BoardContext'
 import { DataContext } from '../../pages/DataContext'
 import ItemList from './ItemList'
 import NewDataForm from '../NewDataForm'
-import { CurrencyYenTwoTone } from '@mui/icons-material';
-
 
 const SingleCard = ({card, itemMap, index, setRefreshCard}) => {
   const { currentBoard, setRefreshBoard } = useContext(BoardContext)
@@ -142,7 +140,7 @@ const SingleCard = ({card, itemMap, index, setRefreshCard}) => {
                       className={`drop-item ${snapshot.isDraggingOver?'drop-active':''}`}
                       sx={{flexGrow: 1, marginBottom: 3, margin: 1, padding: 1, borderRadius: 3}}
                     >
-                      <ItemList items={items} />
+                      <ItemList items={items} currentCard={currentCard}/>
                       {provided.placeholder}
                     </Box>
                   )
