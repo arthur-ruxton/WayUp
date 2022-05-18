@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Draggable } from 'react-beautiful-dnd-next';
-
+import { doc, deleteDoc, updateDoc } from '@firebase/firestore'
 
 import { ListItem, ListItemText, IconButton, Menu, MenuItem } from '@mui/material';
 
 import { EditIcon, DeleteIcon, MoreVertIcon } from '../../assets/icons'
-// import { db } from '../../firebase/firebase'
+import { db } from '../../firebase/firebase'
+import { CardContext } from '../../pages/boards/CardContext'
 
-const Item = ({item, index}) => {
+const Item = ({item, index, currentCard}) => {
+  const { setRefreshCard } = useContext(CardContext)
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -20,11 +23,27 @@ const Item = ({item, index}) => {
   const isDragDisabled = item.text === 'disable this item';
 
   // deletes entire Item (list items / tasks)
-  // const onDelete = async(e) => {
-  //   e.stopPropagation();
-  //   const docRef = doc(db, "Items", thisItem.id)
-  //   await deleteDoc(docRef)
-  // }
+  const onDelete = async(e) => {
+    e.stopPropagation();
+    // delete item from itemIds array on the card 
+    const newItemIds = Array.from(currentCard.itemIds)
+    const itemIndex = newItemIds.indexOf(item)
+    newItemIds.splice(itemIndex, 1)
+    const updatedData = {
+      ...currentCard,
+      itemIds: newItemIds
+    }
+    const updateCardData = async () => {
+      const docRef = doc(db, "Cards", currentCard.id)
+      await updateDoc(docRef, updatedData)
+    }
+    updateCardData()
+    // delete the item from the db
+    const docRef = doc(db, "Items", item.id)
+    await deleteDoc(docRef)
+    // may have to then cause card refresh
+    setRefreshCard("refresh card")
+  }
 
   return (
     <Draggable 
@@ -73,7 +92,7 @@ const Item = ({item, index}) => {
             >
               <MenuItem onClick={handleClose}>
                 <IconButton>
-                  <DeleteIcon/>
+                  <DeleteIcon onClick={onDelete}/>
                 </IconButton>
               </MenuItem>
               <MenuItem onClick={handleClose}>
