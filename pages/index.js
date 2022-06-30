@@ -6,11 +6,16 @@ import { Container, Button } from '@mui/material'
 
 // file system imports
 import { db } from '../firebase/firebase'
+// a component that uses mui grid to list 'boards' horizontally 
 import BoardList from '../components/Boards/BoardList'
+// a reusable form which you can pass various arguments to do different things with data (nifty trick)
 import NewDataForm from '../components/NewDataForm';
 
 export default function Home({boardListProps}) {
 
+  // this state can be passed to different components
+  // they can then use it to manipulate what's displayed on this page
+  // if showForm === false, no form shows, simple
   const [showForm, setShowForm] = useState(false)
 
   const showNewForm = () => {
@@ -42,8 +47,10 @@ export default function Home({boardListProps}) {
 
 export async function getServerSideProps(context) {
 
-  const session = await getSession(context)
+  const session = await getSession(context) // next auth gives us the session object, less awks than fb
 
+  // if there is no session we send a user to login page -> 
+  // this security measure works on every page, aleviating the need for 'fb rules'
   if(!session){
     return {
       redirect: {
@@ -53,8 +60,10 @@ export async function getServerSideProps(context) {
     }
   }
 
+  // now we get an email which comes with next auth session object
   const email = session.user.email
 
+  // use the email to only return relevant data using the fb where method
   const collectionRef = collection(db, "Boards")
   const q = query(collectionRef, where("email", "==", email), orderBy("timestamp", "desc"))
   const querySnapshot = await getDocs(q)
