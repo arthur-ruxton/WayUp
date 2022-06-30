@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { getDocs, getDoc, doc, collection, query, where } from 'firebase/firestore'
-import { Box, IconButton } from '@mui/material'
+import { Box, IconButton } from '@mui/material' 
 
 import { getSession } from 'next-auth/client'
 
-// file system imports 
+// internal file system imports 
 import { BoardContext } from './BoardContext'
 import { AddIcon } from '../../assets/icons'
 import { db } from '../../firebase/firebase'
@@ -15,7 +15,9 @@ import NewDataForm from '../../components/NewDataForm'
 export default function Home({boardProps, cardListProps, itemListProps}) {
   const [currentBoard, setCurrentBoard] = useState({})
   const [showForm, setShowForm] = useState(false)
-  const [refreshBoard, setRefreshBoard] = useState("page load")
+  // I use this state to conditionally rerender parts of the page 
+  // as usual this setter can be passed to different components 
+  const [refreshBoard, setRefreshBoard] = useState("page load") 
 
   const showNewForm = () => {
     setShowForm(true)
