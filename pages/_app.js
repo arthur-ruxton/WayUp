@@ -3,7 +3,8 @@ import '../styles/globals.css'
 
 import { Provider } from 'next-auth/client'
 
-import UserBar from '../components/UserBar'
+// user bar gets data from session and displays it neatly
+import UserBar from '../components/UserBar' 
 import { DataContext } from './DataContext'
 
 // pageProps refers to props returned by get serverSideProps for pre-rendering

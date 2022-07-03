@@ -1,3 +1,7 @@
+// heres a nice simple component that uses the next-auth session object 
+// and MUI compononets to display user data in a neat way, 
+// its imported in _app.js to be displayed on every page.
+
 import React, { useEffect } from 'react'
 import { useSession } from 'next-auth/client'
 import { Container, Box, IconButton, Avatar, Typography } from '@mui/material'
