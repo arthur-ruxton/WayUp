@@ -41,7 +41,7 @@ const DragDropContainer = ({boardProps, cardListProps, itemListProps}) => {
       }
       updateItemData()
     }
-    // if a card is added, current board will refresh add the card id to the baord data ->
+    // if a card is added, current board will refresh, add the card id to the baord data ->
     // then this will be triggered and the card will be added.
     // if an item is added, it will be added to state and then this will be triggered updating the card
     if(currentBoard.id || refreshCard === "refresh card"){
