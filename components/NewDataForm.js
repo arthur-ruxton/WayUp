@@ -8,6 +8,9 @@ import { DataContext } from '../pages/DataContext' // reusable new data object
 import { BoardContext } from '../pages/boards/BoardContext'
 import { AddIcon, CloseIcon } from "../assets/icons" // mui icons from my file system
 
+// This is a configurable form for adding data to the db.
+// We can pass it various props, then using conditional logic, 
+// the component determines what data it is adding and to which firebase 'collection'
 const NewDataForm = ({
   setShowForm,
   setRefreshBoard,
@@ -82,7 +85,7 @@ const NewDataForm = ({
     setNewData({text: '', highlight: false})
   }
 
-  // simply abort the crud opx
+  // simply abort the crud ops
   const onCancle = () => {
     setShowForm(false)
   }
