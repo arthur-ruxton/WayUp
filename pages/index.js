@@ -22,6 +22,7 @@ export default function Home({boardListProps}) {
     setShowForm(true)
   }
 
+  // Container is a very general use MUI component 
   return (
     <Container>
       <BoardList boardListProps={boardListProps}/>

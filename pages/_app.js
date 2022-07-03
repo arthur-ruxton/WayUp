@@ -13,7 +13,11 @@ function MyApp({ Component, pageProps }) {
   const [newData, setNewData] = useState({text: '', highlight: false})
 
   return (
-
+    // provider is a next-auth component. Think of it as providing the 'session' as context. 
+    // here I wrap the entire app in this provider. Any component in the app can access the session. 
+    // the session is used to determine if a user is logged in, if not they are redirected to login. 
+    // in this app I'm trusting google OAuth as my sole security system. Firebase uses rules which
+    // are a new and fairly pointless thing to learn and not the point of this project. 
   <Provider session={pageProps.session}>
     <UserBar />
     <DataContext.Provider value={{ newData, setNewData }}>
